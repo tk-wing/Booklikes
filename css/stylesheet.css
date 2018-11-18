@@ -1,0 +1,76 @@
+.mypage_wrapper{
+  margin: 30px 150px;
+}
+
+.edit_wrapper{
+  margin-top: 50px;
+}
+
+.error_msg{
+  color: red;
+}
+
+p.nomal{
+  word-wrap: break-word;
+}
+
+.my_modal-footer{
+  padding: 15px;
+}
+
+.contents {
+  font-size: 15px;
+  padding: 5px 0px;
+  margin-bottom: 15px;
+  display: none;
+}
+
+.category-item {
+  position:relative;
+  cursor:pointer;
+  text-align: left;
+}
+
+
+.category-button {
+  position:absolute;
+  top:8px;
+  right:5px;
+  color:#ccc;
+  font-size:13px;
+}
+
+.overflow{
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+.filelabel {
+   background-color: #20B47C;  /* 背景色 */
+   color: white;              /* 文字色 */
+   border: 2px solid #20B47C;  /* 枠線 */
+   border-radius: 1em;        /* 角丸 */
+   padding: 5px 10px;         /* 内側の余白 */
+   display: inline-block;     /* インラインブロック化 */
+   margin-top: 10px;
+}
+.filelabel img {
+   vertical-align: bottom;    /* 画像の垂直方向の配置 */
+}
+.filelabel:hover {
+   opacity: 0.5;              /* 半透明 */
+   border: 2px solid red;     /* 枠線(赤色) */
+   cursor: pointer;           /* マウス形状(ポインタ) */
+}
+
+.filelabel_create:hover {
+   opacity: 0.5;              /* 半透明 */
+   border: 2px solid red;     /* 枠線(赤色) */
+   cursor: pointer;           /* マウス形状(ポインタ) */
+}
+.filesend {
+   display: none;  /* 本来のファイル選択フォームは非表示に */
+}
