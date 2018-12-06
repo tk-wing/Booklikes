@@ -36,11 +36,11 @@
         $pw_c = strlen($pw);
         $pw_int = preg_match('/[0-9]/', $pw);
         $pw_alpha = preg_match('/[a-zA-Z]/', $pw);
-        $pw_int_alpha = preg_match('/[^0-9a-zA-Z]/', $password);
+        $pw_int_alpha = preg_match('/[^0-9a-zA-Z]/', $pw);
 
         if($pw == ''){
         		$validations['password'] = 'blank';
-        }elseif($pw_c < 4 || 16 < $pw_c || $pw_int = FALSE || $pw_alpha = FALSE || $pw_int_alpha == TRUE){
+        }elseif($pw_c < 4 || 16 < $pw_c || $pw_int == FALSE || $pw_alpha == FALSE || $pw_int_alpha == TRUE){
         		$validations['password'] = 'unmatch';
         }
 
