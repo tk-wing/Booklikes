@@ -1,0 +1,22 @@
+{
+    "name": "kudo/booklikes",
+    "description": "training",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tsubasa Kudo",
+            "email": "tsubasa.kudo@andco.group"
+        }
+    ],
+    "autoload": {
+        "psr-4":{
+            "App\\": "src"
+        }
+    },
+    "require": {},
+    "scripts": {
+        "start": [
+            "@php -S localhost:8080"
+        ]
+    }
+}

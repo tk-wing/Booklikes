@@ -1,0 +1,7 @@
+{
+    "files.eol": "\n",
+    "files.insertFinalNewline": true,
+    "files.trimTrailingWhitespace": true,
+    "php-cs-fixer.formatHtml": true,
+    "php-cs-fixer.rules": "@Symfony"
+}
