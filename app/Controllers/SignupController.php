@@ -2,8 +2,8 @@
 
 namespace App\Controllers;
 
-use \PDO;
-use \PDOException;
+use PDO;
+use PDOException;
 use Core\Controller;
 use Core\Input;
 use Core\Response;
@@ -12,7 +12,13 @@ class SignupController extends Controller
 {
     public function show()
     {
+        return Response::redirect('/hogehoge');
+
+        // return Response::json(['hoge' => 'piyo']);
+
         return $this->view('signup');
+        return $this->view('signup')->with();
+        return $this->with()->view();
     }
 
     public function register()
@@ -38,6 +44,6 @@ class SignupController extends Controller
             echo $e->getMessage().PHP_EOL;
         }
 
-        Response::redirect('login');
+        return Response::redirect('login');
     }
 }

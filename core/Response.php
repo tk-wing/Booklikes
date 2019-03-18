@@ -2,30 +2,22 @@
 
 namespace Core;
 
+use Core\Response\JsonResponse;
+use Core\Response\RedirectResponse;
+
 class Response
 {
     public static function redirect($url)
     {
-        $url = self::makeSafeUrl($url);
-        header("Location: {$url}");
-        exit;
+        return new RedirectResponse($url);
     }
 
-    public static function makeSafeUrl($url)
+    public static function json($value)
     {
-        $url = parse_url($url);
-        $safeDomain = $_SERVER['HTTP_HOST'];
-        $path = $_SERVER['HTTP_ORIGIN'];
+        return new JsonResponse($value);
+    }
 
-        $domain = '';
-        if (isset($url['host']) && isset($url['port'])) {
-            $domain = $url['host'].':'.$url['port'];
-        }
-
-        if ($domain === $safeDomain) {
-            return $redirect;
-        } else {
-            return $path.'/'.ltrim($url['path'], '/');
-        }
+    public static function view($name){
+        return new ViewResponse($name);
     }
 }

@@ -2,6 +2,9 @@
 
 namespace Core;
 
+use Core\Response\JsonResponse;
+use Core\Response\RedirectResponse;
+
 class Route
 {
     private $routes = [];
@@ -31,6 +34,7 @@ class Route
     public function execute($path, $method)
     {
         $actions = $this->routes["{$path}:{$method}"];
+        $response = null;
 
         if ($actions->class) {
             $controller = new $actions->class();
@@ -39,10 +43,16 @@ class Route
             $response = ($actions->action)();
         }
 
-        if ($response instanceof Controller) {
+        if ($response instanceof RedirectResponse) {
+            $response->redirect();
+        } elseif ($response instanceof JsonResponse) {
             $response->render();
-        } else {
-            echo $response;
+        } elseif (true) {
         }
+        // if ($response instanceof Controller) {
+        //     $response->render();
+        // } else {
+        //     echo $response;
+        // }
     }
 }

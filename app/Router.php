@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Controllers\SignupController;
+use Core\Response;
 use Core\Route;
 
 class Router
@@ -12,7 +13,7 @@ class Router
         $route->get('/signup', SignupController::class, 'show');
         $route->post('/signup', SignupController::class, 'register');
         $route->get('/login', function() {
-            return json_encode(['hoge' => 'fuga']);
+        return Response::json(['hoge' => 'piyo']);
         });
 
     }
