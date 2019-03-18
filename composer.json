@@ -2,21 +2,23 @@
     "name": "kudo/booklikes",
     "description": "training",
     "license": "MIT",
-    "authors": [
-        {
-            "name": "Tsubasa Kudo",
-            "email": "tsubasa.kudo@andco.group"
-        }
-    ],
+    "authors": [{
+        "name": "Tsubasa Kudo",
+        "email": "tsubasa.kudo@andco.group"
+    }],
     "autoload": {
-        "psr-4":{
-            "App\\": "src"
+        "psr-4": {
+            "App\\": "app",
+            "Core\\": "core"
         }
     },
     "require": {},
+    "config": {
+        "process-timeout": 0
+    },
     "scripts": {
         "start": [
-            "@php -S localhost:8080"
+            "@php -S 0.0.0.0:8080 -t public bootstrap.php"
         ]
     }
 }
