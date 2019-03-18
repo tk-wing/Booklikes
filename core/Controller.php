@@ -7,10 +7,6 @@ class Controller{
     private $name;
     private $values = [];
 
-    public static function new(){
-        return new static;
-    }
-
     public function view($name, $values = []){
         $this->name = $name;
         $this->values = $values;

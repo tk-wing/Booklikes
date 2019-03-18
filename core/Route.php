@@ -6,23 +6,43 @@ class Route
 {
     private $routes = [];
 
-    public function get(string $path, callable $callback)
+    private function method($method, $path, ...$args)
     {
-        $this->routes[$path.':GET'] = $callback;
+        $c = count($args);
+        if (1 === $c) {
+            $this->routes["{$path}:{$method}"] = new Action(null, $args[0]);
+        } elseif (2 === $c) {
+            $this->routes["{$path}:{$method}"] = new Action($args[0], $args[1]);
+        } else {
+            throw new \Exception('引数の数は2または3つで指定してください。');
+        }
     }
 
-    public function post(string $path, callable $callback)
+    public function get(string $path, ...$args)
     {
-        $this->routes[$path.':POST'] = $callback;
+        $this->method('GET', $path, ...$args);
+    }
+
+    public function post(string $path, ...$args)
+    {
+        $this->method('POST', $path, ...$args);
     }
 
     public function execute($path, $method)
     {
-        $controller = $this->routes["{$path}:{$method}"]();
-        if ($controller instanceof Controller) {
-            $controller->render();
+        $actions = $this->routes["{$path}:{$method}"];
+
+        if ($actions->class) {
+            $controller = new $actions->class();
+            $response = $controller->{$actions->action}();
         } else {
-            echo $controller;
+            $response = ($actions->action)();
+        }
+
+        if ($response instanceof Controller) {
+            $response->render();
+        } else {
+            echo $response;
         }
     }
 }
