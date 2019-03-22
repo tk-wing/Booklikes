@@ -16,9 +16,9 @@ class Router
         $router->get('/logout', Controllers\LogoutController::class, 'logout');
         $router->get('/bookshelf', Controllers\BookshelfController::class, 'show');
         $router->post('/bookshelf', Controllers\BookshelfController::class, 'create');
-        $router->post('/bookshelf/delete', Controllers\BookshelfController::class, 'delete');
-        $router->post('/bookshelf/update', Controllers\BookshelfController::class, 'update');
+        $router->get('/bookshelf/{id}/delete', Controllers\BookshelfController::class, 'delete');
+        $router->post('/bookshelf/{id}/update', Controllers\BookshelfController::class, 'update');
         $router->get('/books', Controllers\BookController::class, 'show');
-        $router->get('/bookshelf/{id}', Controllers\BookController::class, 'single');
+        $router->get('/bookshelf/{id}', Controllers\BookshelfController::class, 'single');
     }
 }
