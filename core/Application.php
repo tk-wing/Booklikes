@@ -8,29 +8,12 @@ use Core\Response\ViewResponse;
 
 class Application
 {
-    private $routes = [];
+    private $router;
     private $config;
 
-    private function method($method, $path, ...$args)
+    public function __construct(Router $router)
     {
-        $c = count($args);
-        if (1 === $c) {
-            $this->routes["{$path}:{$method}"] = new Action(null, $args[0]);
-        } elseif (2 === $c) {
-            $this->routes["{$path}:{$method}"] = new Action($args[0], $args[1]);
-        } else {
-            throw new \Exception('引数の数は2または3つで指定してください。');
-        }
-    }
-
-    public function get(string $path, ...$args)
-    {
-        $this->method('GET', $path, ...$args);
-    }
-
-    public function post(string $path, ...$args)
-    {
-        $this->method('POST', $path, ...$args);
+        $this->router = $router;
     }
 
     public function useDB($config)
@@ -44,20 +27,21 @@ class Application
         $path = parse_url($path);
         $path = $path['path'];
 
-        $actions = $this->routes["{$path}:{$method}"] ?? null;
+        // $action = $this->routes["{$path}:{$method}"] ?? null;
+        $action = $this->router->getAction($method, $path);   // Action|null
 
-        if (null === $actions) {
+        if (null === $action) {
             echo 404;
 
             return;
         }
         $response = null;
 
-        if ($actions->class) {
-            $controller = new $actions->class($this->config);
-            $response = $controller->{$actions->action}();
+        if ($action->class) {
+            $controller = new $action->class($this->config);
+            $response = $controller->{$action->action}(...$action->query);
         } else {
-            $response = ($actions->action)();
+            $response = ($action->action)(...$action->query);
         }
 
         if ($response instanceof RedirectResponse) {
