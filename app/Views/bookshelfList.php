@@ -15,10 +15,8 @@
     </form>
     <?php if($bookshelves) { ?>
         <?php foreach ($bookshelves as $bookshelf){ ?>
-        <a href="/books?bookshelfId=<?php echo $bookshelf['id'] ?>"><?php h($bookshelf['title']) ?></a>
-        <form action="/bookshelf/delete" method="post">
-            <input type="hidden" name="bookshelfId" value="<?php echo $bookshelf['id'];?>">
-            <button type="submit">本棚を削除</button>
+            <a href="/bookshelf/<?php h($bookshelf['id']) ?>"><?php h($bookshelf['title']) ?></a><br>
+            <a href="/bookshelf/<?php h($bookshelf['id'])?>/delete"><button>本棚を削除</button></a><br>
         </form>
         <?php } ?>
     <?php }else{ ?>
