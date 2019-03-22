@@ -21,4 +21,12 @@ class BookController extends Controller
 
         return Response::view('books', $result);
     }
+
+    public function single($id){
+        $query = $this->query('SELECT * FROM bookshelves where id = :bookshelfId');
+        $query->bind(':bookshelfId', $id, PDO::PARAM_INT);
+        $result = $query->first();
+
+        return Response::view('books', $result);
+    }
 }
