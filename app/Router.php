@@ -2,19 +2,26 @@
 
 namespace App;
 
-use App\Controllers\SignupController;
 use Core\Response;
-use Core\Route;
+use Core\Application;
 
 class Router
 {
-    public function web(Route $route)
+    public function web(Application $app)
     {
-        $route->get('/signup', SignupController::class, 'show');
-        $route->post('/signup', SignupController::class, 'register');
-        $route->get('/login', function() {
-        return Response::json(['hoge' => 'piyo']);
+        $app->get('/signup', Controllers\SignupController::class, 'show');
+        $app->post('/signup', Controllers\SignupController::class, 'register');
+        $app->get('/login', function () {
+            return Response::json(['hoge' => 'piyo']);
         });
-
+        $app->get('/login', Controllers\LoginController::class, 'show');
+        $app->post('/login', Controllers\LoginController::class, 'login');
+        $app->get('/home', Controllers\HomeController::class, 'show');
+        $app->get('/logout', Controllers\LogoutController::class, 'logout');
+        $app->get('/bookshelf', Controllers\BookshelfController::class, 'show');
+        $app->post('/bookshelf', Controllers\BookshelfController::class, 'create');
+        $app->post('/bookshelf/delete', Controllers\BookshelfController::class, 'delete');
+        $app->post('/bookshelf/update', Controllers\BookshelfController::class, 'update');
+        $app->get('/books', Controllers\BookController::class, 'show');
     }
 }

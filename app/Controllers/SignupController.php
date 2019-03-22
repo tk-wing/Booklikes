@@ -12,13 +12,15 @@ class SignupController extends Controller
 {
     public function show()
     {
-        return Response::redirect('/hogehoge');
+        // return Response::redirect('/');
 
         // return Response::json(['hoge' => 'piyo']);
 
-        return $this->view('signup');
-        return $this->view('signup')->with();
-        return $this->with()->view();
+        return Response::view('signup', [
+            'hogehoge' => 'fugafuga',
+        ]);
+        // return Response::view('signup')->with();
+        // return Response::with()->view();
     }
 
     public function register()
@@ -31,18 +33,13 @@ class SignupController extends Controller
 
         $password = password_hash($password, PASSWORD_DEFAULT);
 
-        try {
-            $pdo = new PDO('mysql:host=localhost;dbname=booklikes', 'booklikes', '1234');
-            $statement = $pdo->prepare('insert into users (name, email, password, created_at, updated_at) value (:name, :email, :password, :created_at, :updated_at)');
-            $statement->bindParam(':name', $name, PDO::PARAM_STR);
-            $statement->bindParam(':email', $email, PDO::PARAM_STR);
-            $statement->bindParam(':password', $password, PDO::PARAM_STR);
-            $statement->bindParam(':created_at', $date, PDO::PARAM_STR);
-            $statement->bindParam(':updated_at', $date, PDO::PARAM_STR);
-            $statement->execute();
-        } catch (PDOException $e) {
-            echo $e->getMessage().PHP_EOL;
-        }
+        $query = $this->query('insert into users (name, email, password, created_at, updated_at) value (:name, :email, :password, :created_at, :updated_at)');
+        $query->bind(':name', $name, PDO::PARAM_STR);
+        $query->bind(':email', $email, PDO::PARAM_STR);
+        $query->bind(':password', $password, PDO::PARAM_STR);
+        $query->bind(':created_at', $date, PDO::PARAM_STR);
+        $query->bind(':updated_at', $date, PDO::PARAM_STR);
+        $query->execute();
 
         return Response::redirect('login');
     }

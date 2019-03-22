@@ -4,10 +4,12 @@ namespace Core;
 
 use Core\Response\JsonResponse;
 use Core\Response\RedirectResponse;
+use Core\Response\ViewResponse;
 
-class Route
+class Application
 {
     private $routes = [];
+    private $config;
 
     private function method($method, $path, ...$args)
     {
@@ -31,13 +33,28 @@ class Route
         $this->method('POST', $path, ...$args);
     }
 
+    public function useDB($config)
+    {
+        $this->config = $config;
+    }
+
     public function execute($path, $method)
     {
-        $actions = $this->routes["{$path}:{$method}"];
+        // 応急処置。井上さんに確認。
+        $path = parse_url($path);
+        $path = $path['path'];
+
+        $actions = $this->routes["{$path}:{$method}"] ?? null;
+
+        if (null === $actions) {
+            echo 404;
+
+            return;
+        }
         $response = null;
 
         if ($actions->class) {
-            $controller = new $actions->class();
+            $controller = new $actions->class($this->config);
             $response = $controller->{$actions->action}();
         } else {
             $response = ($actions->action)();
@@ -47,7 +64,10 @@ class Route
             $response->redirect();
         } elseif ($response instanceof JsonResponse) {
             $response->render();
-        } elseif (true) {
+        } elseif ($response instanceof ViewResponse) {
+            $response->render();
+        } else {
+            echo $response;
         }
         // if ($response instanceof Controller) {
         //     $response->render();

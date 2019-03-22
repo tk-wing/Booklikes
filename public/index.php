@@ -1,26 +1,19 @@
 <?php
+
+use App\Router;
+use Core\Application;
+
+session_start();
+
 $basePath = __DIR__.'/..';
 require $basePath.'/vendor/autoload.php';
-use App\Router;
-use Core\Route;
+require $basePath.'/core/helper.php';
 
+$router = new Router();
+$app = new Application();
+$config = require $basePath.'/config/database.php';
+$app->useDB($config);
+$router->web($app);
 $uri = $_SERVER['REQUEST_URI'] ?? '';
 $method = $_SERVER['REQUEST_METHOD'] ?? '';
-// var_dump($_SERVER['REQUEST_URI']);
-$router = new Router();
-$route = new Route();
-$router->web($route);
-$route->execute($uri, $method);
-
-// $routes = [];
-// $routes['/signup'] = function(){
-//     var_dump('SIGNUP');
-// };
-
-// $routes['/login'] = function(){
-//     var_dump('LOGIN');
-// };
-
-// $routes[$uri]();
-
-
+$app->execute($uri, $method);
