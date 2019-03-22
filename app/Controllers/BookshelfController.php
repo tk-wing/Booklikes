@@ -17,7 +17,7 @@ class BookshelfController extends Controller
         $query->bind(':id', $id, PDO::PARAM_INT);
         $result['bookshelves'] = $query->all();
 
-        return Response::view('bookshelf', $result);
+        return Response::view('bookshelfList', $result);
     }
 
     public function create()
@@ -36,27 +36,32 @@ class BookshelfController extends Controller
         return Response::redirect('bookshelf');
     }
 
-    public function update()
+    public function update($id)
     {
         $title = Input::post('title');
-        $bookshelfId = Input::post('bookshelfId');
 
         $query = $this->query('UPDATE bookshelves SET title = :title WHERE id = :bookshelfId');
         $query->bind(':title', $title, PDO::PARAM_STR);
-        $query->bind(':bookshelfId', $bookshelfId, PDO::PARAM_INT);
+        $query->bind(':bookshelfId', $id, PDO::PARAM_INT);
         $query->execute();
 
-        return Response::redirect("books?bookshelfId={$bookshelfId}");
+        return Response::redirect("bookshelf/{$id}");
     }
 
-    public function delete()
+    public function delete($id)
     {
-        $bookshelfId = $_POST['bookshelfId'];
-
         $query = $this->query('DELETE FROM bookshelves WHERE id = :bookshelfId');
-        $query->bind(':bookshelfId', $bookshelfId, PDO::PARAM_STR);
+        $query->bind(':bookshelfId', $id, PDO::PARAM_STR);
         $query->execute();
 
         return Response::redirect('bookshelf');
+    }
+
+    public function single($id){
+        $query = $this->query('SELECT * FROM bookshelves where id = :bookshelfId');
+        $query->bind(':bookshelfId', $id, PDO::PARAM_INT);
+        $result = $query->first();
+
+        return Response::view('bookshelfDetail', $result);
     }
 }
