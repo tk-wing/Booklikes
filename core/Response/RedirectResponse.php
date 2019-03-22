@@ -30,8 +30,10 @@ class RedirectResponse
 
         if ($domain === $safeDomain) {
             return $redirect;
-        } else {
+        } elseif (isset($url['query'])) {
             return $path.'/'.ltrim($url['path'], '/').'?'.$url['query'];
+        }else {
+            return $path.'/'.ltrim($url['path'], '/');
         }
     }
 }
