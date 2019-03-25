@@ -23,18 +23,30 @@ class Application
 
     public function execute($path, $method)
     {
-        // 応急処置。井上さんに確認。
-        $path = parse_url($path);
-        $path = $path['path'];
+        $method = strtoupper($method);
 
-        // $action = $this->routes["{$path}:{$method}"] ?? null;
+        $path = parse_url($path, PHP_URL_PATH);
+
         $action = $this->router->getAction($method, $path);   // Action|null
 
+        // 404
         if (null === $action) {
             echo 404;
 
             return;
         }
+
+        // CSRFのcheck
+        if ('POST' === $method) {
+            $token = Input::post('csrf_token');
+            if ($token !== csrf_token()) {
+                Response::view('_400')->render();
+
+                return;
+            }
+        }
+
+        // actionの実行
         $response = null;
 
         if ($action->class) {
@@ -44,6 +56,7 @@ class Application
             $response = ($action->action)(...$action->query);
         }
 
+        // Responseの実行
         if ($response instanceof RedirectResponse) {
             $response->redirect();
         } elseif ($response instanceof JsonResponse) {
@@ -53,10 +66,5 @@ class Application
         } else {
             echo $response;
         }
-        // if ($response instanceof Controller) {
-        //     $response->render();
-        // } else {
-        //     echo $response;
-        // }
     }
 }

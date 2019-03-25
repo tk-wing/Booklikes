@@ -7,3 +7,12 @@ function h($value){
 function e($value){
     echo $value;
 }
+
+function csrf_token(){
+    return hash('sha256', session_id());
+}
+
+function csrf_field($type = 'hidden'){
+    $token = csrf_token();
+    echo '<input type="'.$type.'" name="csrf_token" value="'.$token.'">';
+}
