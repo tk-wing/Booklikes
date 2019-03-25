@@ -25,9 +25,9 @@ class SignupController extends Controller
 
     public function register()
     {
-        $name = Input::post('name');
-        $email = Input::post('email');
-        $password = Input::post('password');
+        $name = Input::request('name');
+        $email = Input::request('email');
+        $password = Input::request('password');
 
         $date = date('Y-m-d H:i:s');
 

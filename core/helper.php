@@ -14,5 +14,9 @@ function csrf_token(){
 
 function csrf_field($type = 'hidden'){
     $token = csrf_token();
-    echo '<input type="'.$type.'" name="csrf_token" value="'.$token.'">';
+    echo '<input type="'.$type.'" name="_csrf_token" value="'.$token.'">';
+}
+
+function http_method($method, $type = 'hidden'){
+    echo '<input type="'.$type.'" name="_http_method" value="'.$method.'">';
 }

@@ -10,6 +10,7 @@
 
 <body>
     <form method="post">
+        <?php csrf_field(); ?>
         <?php if (isset($email)) {
     ?>
             <p>Eメールアドレス：<br><input name="email" type="text"

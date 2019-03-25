@@ -21,7 +21,8 @@ class RedirectResponse
     {
         $url = parse_url($url);
         $safeDomain = $_SERVER['HTTP_HOST'];
-        $path = $_SERVER['HTTP_ORIGIN'];
+        $scheme = isset($_SERVER['HTTPS']) ? 'https' : 'http';
+        $path = "{$scheme}://{$safeDomain}";
 
         $domain = '';
         if (isset($url['host']) && isset($url['port'])) {
@@ -32,7 +33,7 @@ class RedirectResponse
             return $redirect;
         } elseif (isset($url['query'])) {
             return $path.'/'.ltrim($url['path'], '/').'?'.$url['query'];
-        }else {
+        } else {
             return $path.'/'.ltrim($url['path'], '/');
         }
     }

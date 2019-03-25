@@ -2,10 +2,6 @@
 
 namespace Core;
 
-use Core\Response\JsonResponse;
-use Core\Response\RedirectResponse;
-use Core\Response\ViewResponse;
-
 class Application
 {
     private $router;
@@ -21,50 +17,28 @@ class Application
         $this->config = $config;
     }
 
-    public function execute($path, $method)
+    public function execute()
     {
-        $method = strtoupper($method);
-
-        $path = parse_url($path, PHP_URL_PATH);
-
-        $action = $this->router->getAction($method, $path);   // Action|null
+        $method = Router::getMethod();
+        $path = Router::getPath();
+        $action = $this->router->getAction($method, $path);
 
         // 404
-        if (null === $action) {
-            echo 404;
-
+        if(!$action){
+            Response::view('_404')->render();
             return;
         }
 
         // CSRFのcheck
-        if ('POST' === $method) {
-            $token = Input::post('csrf_token');
-            if ($token !== csrf_token()) {
-                Response::view('_400')->render();
-
-                return;
-            }
+        if (!Request::tokenMatch($method)) {
+            Response::view('_400')->render();
+            return;
         }
 
         // actionの実行
-        $response = null;
-
-        if ($action->class) {
-            $controller = new $action->class($this->config);
-            $response = $controller->{$action->action}(...$action->query);
-        } else {
-            $response = ($action->action)(...$action->query);
-        }
+        $response = $action->doAction($this->config);
 
         // Responseの実行
-        if ($response instanceof RedirectResponse) {
-            $response->redirect();
-        } elseif ($response instanceof JsonResponse) {
-            $response->render();
-        } elseif ($response instanceof ViewResponse) {
-            $response->render();
-        } else {
-            echo $response;
-        }
+        Response::render($response);
     }
 }

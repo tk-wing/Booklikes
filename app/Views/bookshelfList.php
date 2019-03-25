@@ -10,6 +10,7 @@
 
 <body>
     <form method="post">
+        <?php csrf_field(); ?>
         <p>本棚名：<input name="title" type="text"></p>
         <button type="submit">本棚作成</button>
     </form>
@@ -17,7 +18,6 @@
         <?php foreach ($bookshelves as $bookshelf){ ?>
             <a href="/bookshelf/<?php h($bookshelf['id']) ?>"><?php h($bookshelf['title']) ?></a><br>
             <a href="/bookshelf/<?php h($bookshelf['id'])?>/delete"><button>本棚を削除</button></a><br>
-        </form>
         <?php } ?>
     <?php }else{ ?>
         <p>本棚がありません。</p>

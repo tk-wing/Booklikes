@@ -16,4 +16,16 @@ class Action{
         $this->action = $action;
     }
 
+    public function doAction($config)
+    {
+        if ($this->class) {
+            $controller = new $this->class($config);
+
+            return $controller->{$this->action}(...$this->query);
+        } else {
+            return ($this->action)(...$this->query);
+        }
+    }
+
+
 }

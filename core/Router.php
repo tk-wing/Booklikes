@@ -14,11 +14,9 @@ class Router
         if (1 === $c) {
             $action = new Action($method, $path, null, $args[0]);
             $this->add($action);
-        // $this->routes["{$path}:{$method}"] = new Action(null, $args[0]);
         } elseif (2 === $c) {
             $action = new Action($method, $path, $args[0], $args[1]);
             $this->add($action);
-        // $this->routes["{$path}:{$method}"] = new Action($args[0], $args[1]);
         } else {
             throw new \Exception('引数の数は2または3つで指定してください。');
         }
@@ -34,9 +32,46 @@ class Router
         $this->method('POST', $path, ...$args);
     }
 
+    public function patch(string $path, ...$args)
+    {
+        $this->method('PATCH', $path, ...$args);
+    }
+
+    public function put(string $path, ...$args)
+    {
+        $this->method('PUT', $path, ...$args);
+    }
+
+    public function delete(string $path, ...$args)
+    {
+        $this->method('DELETE', $path, ...$args);
+    }
+
     public function add($action)
     {
         $this->actions[] = $action;
+    }
+
+    public static function getMethod()
+    {
+        $method = $_SERVER['REQUEST_METHOD'] ?? '';
+        $method = strtoupper($method);
+
+        $http = Input::request('_http_method');
+
+        if ($http) {
+            $method = strtoupper($http);
+        }
+
+        return $method;
+    }
+
+    public static function getPath()
+    {
+        $path = $_SERVER['REQUEST_URI'] ?? '';
+        $path = parse_url($path, PHP_URL_PATH);
+
+        return $path;
     }
 
     public function getAction($method, $path)
@@ -49,4 +84,5 @@ class Router
             }
         }
     }
+
 }

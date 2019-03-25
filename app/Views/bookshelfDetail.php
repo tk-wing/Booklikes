@@ -8,8 +8,9 @@
 </head>
 <body>
     <h1><?php h($title) ?></h1>
-    <form action="/bookshelf/<?php h($id); ?>/update" method="post">
+    <form action="/bookshelf/<?php h($id); ?>" method="post">
         <?php csrf_field(); ?>
+        <?php http_method('patch'); ?>
         <input type="text" name="title">
         <button type="submit">本棚のタイトルを変更</button>
     </form>

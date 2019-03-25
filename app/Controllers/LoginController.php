@@ -18,8 +18,8 @@ class LoginController extends Controller
     public function login()
     {
 
-        $email = Input::post('email');
-        $password = Input::post('password');
+        $email = Input::request('email');
+        $password = Input::request('password');
 
         $query = $this->query('select * from users where email = :email');
         $query->bind(':email', $email, PDO::PARAM_STR);

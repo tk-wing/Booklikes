@@ -23,7 +23,7 @@ class BookshelfController extends Controller
     public function create()
     {
         $id = $_SESSION['id'] ?? '';
-        $title = Input::post('title');
+        $title = Input::request('title');
         $date = date('Y-m-d H:i:s');
 
         $query = $this->query('INSERT INTO bookshelves (user_id, title, created_at, updated_at) VALUE (:id, :title, :created_at, :updated_at)');
@@ -38,7 +38,7 @@ class BookshelfController extends Controller
 
     public function update($id)
     {
-        $title = Input::post('title');
+        $title = Input::request('title');
 
         $query = $this->query('UPDATE bookshelves SET title = :title WHERE id = :bookshelfId');
         $query->bind(':title', $title, PDO::PARAM_STR);
