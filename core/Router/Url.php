@@ -7,12 +7,11 @@ class Url
     private $url = [];
     private $default = [];
 
-    public function __construct($accessUrl, $defaultUrl){
+    public function __construct($accessUrl, $defaultUrl)
+    {
         $this->url = explode('/', $accessUrl);
         $this->default = explode('/', $defaultUrl);
     }
-
-
 
     public function match()
     {
@@ -34,11 +33,23 @@ class Url
         return true;
     }
 
-    public function diff(){
-        if($this->match()){
+    public function diff()
+    {
+        if ($this->match()) {
             return array_diff($this->url, $this->default);
         }
+
         return [];
     }
 
+    public function getTable(){
+        $table = [];
+        foreach($this->default as $d){
+            $l = strlen($d);
+            if ($d !== '' && '{' === $d[0] && '}' === $d[$l - 1]) {
+                $table[] = substr($d, 1, $l - 2);
+            }
+        }
+        return $table;
+    }
 }

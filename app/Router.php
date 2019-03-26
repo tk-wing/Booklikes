@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Core\Request;
 use Core\Response;
 
 class Router
@@ -16,9 +17,10 @@ class Router
         $router->get('/logout', Controllers\LogoutController::class, 'logout');
         $router->get('/bookshelf', Controllers\BookshelfController::class, 'show');
         $router->post('/bookshelf', Controllers\BookshelfController::class, 'create');
-        $router->get('/bookshelf/{id}/delete', Controllers\BookshelfController::class, 'delete');
-        $router->patch('/bookshelf/{id}', Controllers\BookshelfController::class, 'update');
+        $router->delete('/bookshelf/{bookshelves}', Controllers\BookshelfController::class, 'delete');
+        $router->patch('/bookshelf/{bookshelves}', Controllers\BookshelfController::class, 'update');
         $router->get('/books', Controllers\BookController::class, 'show');
-        $router->get('/bookshelf/{id}', Controllers\BookshelfController::class, 'single');
+        $router->get('/bookshelf/{bookshelves}', Controllers\BookshelfController::class, 'single');
+        $router->get('/bookshelf/:id/book/:id', Controllers\BookshelfController::class, 'test');
     }
 }

@@ -15,8 +15,6 @@
         <button type="submit">本棚のタイトルを変更</button>
     </form>
 
-
-    <form action=""></form>
     <a href="/home">ホーム</a>
     <a href="/bookshelf">本棚</a>
     <a href="/logout">ログアウト</a>

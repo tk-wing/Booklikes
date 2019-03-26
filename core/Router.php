@@ -79,10 +79,12 @@ class Router
         foreach ($this->actions as $action) {
             $url = new Url($path, $action->path);
             if ($url->match() && $action->method === $method) {
-                $action->query = $url->diff();
+                $key = $url->getTable();
+                $value = array_values($url->diff());
+                $array = array_combine($key, $value);
+                $action->query = $array;
                 return $action;
             }
         }
     }
-
 }

@@ -6,6 +6,7 @@ use PDO;
 use Core\Controller;
 use Core\Input;
 use Core\Response;
+use Core\Request;
 
 class BookshelfController extends Controller
 {
@@ -36,32 +37,36 @@ class BookshelfController extends Controller
         return Response::redirect('bookshelf');
     }
 
-    public function update($id)
+    public function update(Request $request)
     {
         $title = Input::request('title');
 
-        $query = $this->query('UPDATE bookshelves SET title = :title WHERE id = :bookshelfId');
+        $query = $this->query("UPDATE bookshelves SET title = :title WHERE id = :bookshelfId");
         $query->bind(':title', $title, PDO::PARAM_STR);
-        $query->bind(':bookshelfId', $id, PDO::PARAM_INT);
+        $query->bind(':bookshelfId', $request->param, PDO::PARAM_INT);
         $query->execute();
 
-        return Response::redirect("bookshelf/{$id}");
+        return Response::redirect("bookshelf/{$request->param}");
+
     }
 
-    public function delete($id)
+    public function delete(Request $request)
     {
-        $query = $this->query('DELETE FROM bookshelves WHERE id = :bookshelfId');
-        $query->bind(':bookshelfId', $id, PDO::PARAM_STR);
+        $query = $this->query("DELETE FROM bookshelves WHERE id = :bookshelfId");
+        $query->bind(':bookshelfId', $request->param, PDO::PARAM_STR);
         $query->execute();
 
         return Response::redirect('bookshelf');
+
     }
 
-    public function single($id){
-        $query = $this->query('SELECT * FROM bookshelves where id = :bookshelfId');
-        $query->bind(':bookshelfId', $id, PDO::PARAM_INT);
-        $result = $query->first();
+    public function single(Request $bookshelf)
+    {
+        return Response::view('bookshelfDetail', $bookshelf->record);
+    }
 
-        return Response::view('bookshelfDetail', $result);
+    public function test($bookshelfId, $bookId)
+    {
+        var_dump($bookshelfId, $bookId);
     }
 }
