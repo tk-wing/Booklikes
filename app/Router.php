@@ -21,6 +21,6 @@ class Router
         $router->patch('/bookshelf/{bookshelves}', Controllers\BookshelfController::class, 'update');
         $router->get('/books', Controllers\BookController::class, 'show');
         $router->get('/bookshelf/{bookshelves}', Controllers\BookshelfController::class, 'single');
-        $router->get('/bookshelf/:id/book/:id', Controllers\BookshelfController::class, 'test');
+        $router->get('/bookshelf/{bookshelves}/book/:id', Controllers\BookshelfController::class, 'test');
     }
 }

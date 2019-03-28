@@ -23,6 +23,7 @@ class Application
         $path = Router::getPath();
         $action = $this->router->getAction($method, $path);
 
+
         // 404
         if(!$action){
             Response::view('_404')->render();

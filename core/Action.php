@@ -8,7 +8,8 @@ class Action
     public $path;
     public $class;
     public $action;
-    public $query = [];
+    public $params = [];
+    public $id = [];
 
     public function __construct($method, $path, $class, $action)
     {
@@ -21,10 +22,14 @@ class Action
     public function doAction($config)
     {
         $requests = [];
-        foreach ($this->query as $key => $value) {
-            $request = new Request($config, $value, $key);
-            $request->select();
-            $requests[] = $request;
+        foreach ($this->params as $value) {
+            if (is_array($value)) {
+                $request = new Request($config, $value['value'], $value['key']);
+                $requests[] = $request;
+                $request->select();
+            } else {
+                $requests[] = $value;
+            }
         }
 
         if ($this->class) {

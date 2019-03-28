@@ -10,6 +10,7 @@
 
 <body>
     <form method="post">
+        <?php csrf_field(); ?>
         <p>名前：<br><input name="name" type="text"></p>
         <p>Eメールアドレス：<br><input name="email" type="text"></p>
         <p>パスワード：<br><input name="password" type="password"></p>
