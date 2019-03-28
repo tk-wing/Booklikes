@@ -24,16 +24,23 @@ class BookshelfController extends Controller
     public function create()
     {
         $id = $_SESSION['id'] ?? '';
-        $title = Input::request('title');
         $date = date('Y-m-d H:i:s');
 
-        $query = $this->query('INSERT INTO bookshelves (user_id, title, created_at, updated_at) VALUE (:id, :title, :created_at, :updated_at)');
-        $query->bind(':id', $id, PDO::PARAM_INT);
-        $query->bind(':title', $title, PDO::PARAM_STR);
-        $query->bind(':created_at', $date, PDO::PARAM_STR);
-        $query->bind(':updated_at', $date, PDO::PARAM_STR);
-        $query->execute();
+        $validate = $this->validation(Input::request(), [
+            'title' => 'required|min:1|max:20',
+        ]);
 
+        $errors = $validate->getErrors();
+        var_dump($validate->passed());
+        exit;
+        if ($validate->passed()) {
+            $query = $this->query('INSERT INTO bookshelves (user_id, title, created_at, updated_at) VALUE (:id, :title, :created_at, :updated_at)');
+            $query->bind(':id', $id, PDO::PARAM_INT);
+            $query->bind(':title', $title, PDO::PARAM_STR);
+            $query->bind(':created_at', $date, PDO::PARAM_STR);
+            $query->bind(':updated_at', $date, PDO::PARAM_STR);
+            $query->execute();
+        }
         return Response::redirect('bookshelf');
     }
 
@@ -41,23 +48,21 @@ class BookshelfController extends Controller
     {
         $title = Input::request('title');
 
-        $query = $this->query("UPDATE bookshelves SET title = :title WHERE id = :bookshelfId");
+        $query = $this->query('UPDATE bookshelves SET title = :title WHERE id = :bookshelfId');
         $query->bind(':title', $title, PDO::PARAM_STR);
         $query->bind(':bookshelfId', $request->param, PDO::PARAM_INT);
         $query->execute();
 
         return Response::redirect("bookshelf/{$request->param}");
-
     }
 
     public function delete(Request $request)
     {
-        $query = $this->query("DELETE FROM bookshelves WHERE id = :bookshelfId");
+        $query = $this->query('DELETE FROM bookshelves WHERE id = :bookshelfId');
         $query->bind(':bookshelfId', $request->param, PDO::PARAM_STR);
         $query->execute();
 
         return Response::redirect('bookshelf');
-
     }
 
     public function single(Request $bookshelf)

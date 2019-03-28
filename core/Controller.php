@@ -7,8 +7,11 @@ class Controller
     private $name;
     private $values = [];
     private $config;
+    private $pdo;
 
-    public function __construct($config){
+    public function __construct($config)
+    {
+        $this->pdo = new \PDO("{$config['db']}:host={$config['host']};dbname={$config['dbname']}", $config['username'], $config['password']);
         $this->config = $config;
     }
 
@@ -37,6 +40,11 @@ class Controller
 
     public function query($query)
     {
-        return new Query($query, $this->config);
+        return new Query($query, $this->pdo);
+    }
+
+    public function validation($requests, $fields)
+    {
+        return new Validation($requests, $fields);
     }
 }

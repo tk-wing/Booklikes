@@ -4,8 +4,7 @@ namespace Core;
 class Query{
     private $stmt;
 
-    public function __construct($query, $config){
-        $pdo = new \PDO("{$config['db']}:host={$config['host']};dbname={$config['dbname']}", $config['username'], $config['password']);
+    public function __construct($query, $pdo){
         $this->stmt = $pdo->prepare($query);
     }
 
