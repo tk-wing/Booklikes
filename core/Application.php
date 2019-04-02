@@ -23,16 +23,17 @@ class Application
         $path = Router::getPath();
         $action = $this->router->getAction($method, $path);
 
-
         // 404
-        if(!$action){
+        if (!$action) {
             Response::view('_404')->render();
+
             return;
         }
 
         // CSRFのcheck
         if (!Request::tokenMatch($method)) {
             Response::view('_400')->render();
+
             return;
         }
 

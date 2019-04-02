@@ -34,7 +34,8 @@ class Response
         return $response;
     }
 
-    public static function render($response){
+    public static function render($response)
+    {
         if ($response instanceof RedirectResponse) {
             $response->redirect();
         } elseif ($response instanceof JsonResponse) {

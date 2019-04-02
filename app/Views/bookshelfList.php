@@ -10,8 +10,13 @@
 
 <body>
     <form method="post">
-        <?php csrf_field(); ?>
+        <?php csrf_field();?>
         <p>本棚名：<input name="title" type="text"></p>
+        <ul>
+            <?php foreach($errors['title'] ?? [] as $error) {?>
+                <li><?php echo $error; ?></li>
+            <?php };?>
+        </ul>
         <button type="submit">本棚作成</button>
     </form>
     <?php if($bookshelves) { ?>

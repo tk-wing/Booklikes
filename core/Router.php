@@ -83,18 +83,6 @@ class Router
                 $action->params = $url->getParams();
 
                 return $action;
-
-                // $key = $url->getTable();
-                // $value = array_values($url->diff());
-
-                // if($key){
-                //     $array = array_combine($key, $value);
-                //     $action->query = $array;
-                // }else{
-                //     $action->id = $value;
-                // }
-
-                // return $action;
             }
         }
     }

@@ -18,6 +18,7 @@ class Url
         $cb = count($this->default);
 
         if ($ca === $cb) {
+
             for ($i = 1; $i < $ca; ++$i) {
                 $lb = strlen($this->default[$i]);
                 $brace = '{' === $this->default[$i][0] && '}' === $this->default[$i][$lb - 1];
@@ -33,6 +34,8 @@ class Url
                 }elseif ($colon) {
                     $this->matched = true;
                     $this->params[] = $this->url[$i];
+                }else{
+                    break;
                 }
             }
         }

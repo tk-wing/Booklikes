@@ -2,17 +2,39 @@
 
 namespace Core;
 
+use Core\Model\User;
+
 class Controller
 {
     private $name;
     private $values = [];
     private $config;
     private $pdo;
+    public $authorizedUser;
+    private $isExpired;
 
     public function __construct($config)
     {
         $this->pdo = new \PDO("{$config['db']}:host={$config['host']};dbname={$config['dbname']}", $config['username'], $config['password']);
         $this->config = $config;
+
+        // Authorization: Bearer a8e8add75676fa7b1bf47938deda1d1d92efc1b765e837c4f8abd6b726e27a1a
+
+        $auth = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
+        $auth = explode(' ', $auth);
+
+        $apiKey = $auth[1] ?? '';
+
+        $query = $this->query('SELECT * FROM api_keys WHERE api_key = :api_key');
+        $query->bind(':api_key', $apiKey, \PDO::PARAM_STR);
+        $result = $query->first();
+
+        if ($result) {
+            $expiredAt = new \DateTime($result['expired_at']);
+            $now = new \DateTime();
+            $this->isExpired = $expiredAt < $now;
+            $this->authorizedUser = new User($result['user_id']);
+        }
     }
 
     public function view($name, $values = [])
@@ -45,6 +67,15 @@ class Controller
 
     public function validation($requests, $fields)
     {
-        return new Validation($requests, $fields);
+        return new Validation($requests, $fields, $this->pdo);
+    }
+
+    public function isAuthorized()
+    {
+        return (bool) $this->authorizedUser;
+    }
+
+    public function isExpired(){
+        return $this->isExpired;
     }
 }

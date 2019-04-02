@@ -18,7 +18,7 @@ class Query{
     }
 
     public function first(){
-        $this->stmt->execute();
+        $res = $this->stmt->execute();
         return $this->stmt->fetch(\PDO::FETCH_ASSOC);
     }
 

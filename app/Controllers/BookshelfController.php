@@ -25,31 +25,41 @@ class BookshelfController extends Controller
     {
         $id = $_SESSION['id'] ?? '';
         $date = date('Y-m-d H:i:s');
+        $title = Input::request('title');
 
         $validate = $this->validation(Input::request(), [
-            'title' => 'required|min:1|max:20',
+            'title' => 'required|min:2|max:20|exists:bookshelves',
         ]);
 
-        $errors = $validate->getErrors();
-        var_dump($validate->passed());
-        exit;
-        if ($validate->passed()) {
+        if (!$validate->hasErrors()) {
             $query = $this->query('INSERT INTO bookshelves (user_id, title, created_at, updated_at) VALUE (:id, :title, :created_at, :updated_at)');
             $query->bind(':id', $id, PDO::PARAM_INT);
             $query->bind(':title', $title, PDO::PARAM_STR);
             $query->bind(':created_at', $date, PDO::PARAM_STR);
             $query->bind(':updated_at', $date, PDO::PARAM_STR);
             $query->execute();
+
+            return Response::redirect('bookshelf');
+        } else {
+            $id = $_SESSION['id'] ?? '';
+
+            $query = $this->query('SELECT * FROM bookshelves WHERE user_id = :id');
+            $query->bind(':id', $id, PDO::PARAM_INT);
+            $result['bookshelves'] = $query->all();
+            $result['errors'] = $validate->getErrors();
+
+            return Response::view('bookshelfList', $result);
         }
-        return Response::redirect('bookshelf');
     }
 
     public function update(Request $request)
     {
         $title = Input::request('title');
+        $date = date('Y-m-d H:i:s');
 
-        $query = $this->query('UPDATE bookshelves SET title = :title WHERE id = :bookshelfId');
+        $query = $this->query('UPDATE bookshelves SET title = :title, updated_at = :updated_at WHERE id = :bookshelfId');
         $query->bind(':title', $title, PDO::PARAM_STR);
+        $query->bind(':updated_at', $date, PDO::PARAM_STR);
         $query->bind(':bookshelfId', $request->param, PDO::PARAM_INT);
         $query->execute();
 

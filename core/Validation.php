@@ -5,9 +5,12 @@ namespace Core;
 class Validation
 {
     private $errors = [];
+    private $pdo;
 
-    public function __construct($requests, $fields)
+    public function __construct($requests, $fields, $pdo)
     {
+        $this->pdo = $pdo;
+
         foreach ($fields as $key => $value) {
             $request = $requests[$key] ?? '';
             $rules = explode('|', $value);
@@ -17,6 +20,22 @@ class Validation
                 $func = $rule[0];
                 $this->$func($request, $key, $rule[1] ?? null);
             }
+        }
+    }
+
+    private function exists($request, $key)
+    {
+        $id = $_SESSION['id'];
+        $key = str_replace('`', '``', $key);
+
+        $sql = "SELECT `$key` FROM bookshelves WHERE user_id = :id AND title = :title";
+        $query = new Query($sql, $this->pdo);
+        $query->bind(':id', $id, \PDO::PARAM_INT);
+        $query->bind(':title', $request, \PDO::PARAM_STR);
+        $result = $query->first();
+
+        if ($result) {
+            $this->errors[$key][] = 'すでに登録されています。';
         }
     }
 
@@ -31,7 +50,7 @@ class Validation
     {
         $length = strlen($request);
         if ($length < $rule) {
-            $this->errors[$key][] = "{$rule}文字以上で入力してください}";
+            $this->errors[$key][] = "{$rule}文字以上で入力してください。";
         }
     }
 
@@ -39,7 +58,7 @@ class Validation
     {
         $length = strlen($request);
         if ($length > $rule) {
-            $this->errors[$key][] = "{$rule}文字以下で入力してください}";
+            $this->errors[$key][] = "{$rule}文字以下で入力してください。";
         }
     }
 
@@ -48,10 +67,8 @@ class Validation
         return $this->errors;
     }
 
-    public function passed(){
-        if($this->errors){
-            return false;
-        }
-        return true;
+    public function hasErrors()
+    {
+        return (bool) $this->errors;
     }
 }
