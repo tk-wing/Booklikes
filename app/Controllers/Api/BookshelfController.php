@@ -41,25 +41,4 @@ class BookshelfController extends \Core\Controller
         ]);
     }
 
-    public function scope($scope)
-    {
-        $id = $this->authorizedUser->id;
-
-        $query = $this->query('SELECT scope FROM api_keys WHERE user_id = :id');
-        $query->bind(':id', $id, \PDO::PARAM_INT);
-        $result = $query->first();
-
-        if('*' === $result['scope']){
-            return true;
-        }
-
-        $_scope = explode(',', $result['scope']);
-        foreach ($_scope as $value) {
-            if ($value === $scope) {
-                return true;
-            }
-        }
-
-        return false;
-    }
 }

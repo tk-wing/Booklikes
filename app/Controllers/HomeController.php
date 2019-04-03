@@ -41,13 +41,14 @@ class HomeController extends Controller
     public function update()
     {
         $id = $_SESSION['id'];
-        $date = date('Y-m-d H:i:s');
+        $date = new \DateTime();
         $api = uniqid(mt_rand(), true);
         $api = hash('sha256', $api);
 
-        $query = $this->query("UPDATE api_keys SET api_key = :api_key, updated_at = :updated_at WHERE user_id = :id");
+        $query = $this->query("UPDATE api_keys SET api_key = :api_key, updated_at = :updated_at, expired_at = :expired_at WHERE user_id = :id");
         $query->bind(':api_key', $api, PDO::PARAM_STR);
-        $query->bind(':updated_at', $date, PDO::PARAM_STR);
+        $query->bind(':updated_at', $date->format('Y-m-d H:i:s'), PDO::PARAM_STR);
+        $query->bind(':expired_at', $date->modify('+1 days')->format('Y-m-d H:i:s'), PDO::PARAM_STR);
         $query->bind(':id', $id, PDO::PARAM_INT);
         $query->execute();
 

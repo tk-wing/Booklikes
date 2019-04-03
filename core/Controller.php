@@ -78,4 +78,24 @@ class Controller
     public function isExpired(){
         return $this->isExpired;
     }
+
+    public function scope($scope)
+    {
+        $id = $this->authorizedUser->id;
+
+        $query = $this->query('SELECT scope FROM api_keys WHERE user_id = :id');
+        $query->bind(':id', $id, \PDO::PARAM_INT);
+        $result = $query->first();
+
+        $_scope = explode(',', $result['scope']);
+        foreach ($_scope as $value) {
+            if ('*' === $value) {
+                return true;
+            } elseif ($value === $scope) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
