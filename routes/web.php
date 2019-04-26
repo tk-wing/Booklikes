@@ -11,6 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::resource('/home', 'HomeController');
+Route::get('/signup', 'Auth\SignupController@create');
+Route::post('/signup', 'Auth\SignupController@store');
+Route::get('/login', 'Auth\AuthController@index');
+Route::post('/login', 'Auth\AuthController@authenticate');
+Route::get('/logout', 'Auth\AuthController@logout');
