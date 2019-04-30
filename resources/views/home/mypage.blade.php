@@ -19,7 +19,7 @@
                 </div>
             </div>
         </div>
-        <a href="edit_profile.php"><button type="button" class="btn btn-success">プロフィール編集</button></a>
+        <a href="{{ url('/profile/create') }}"><button type="button" class="btn btn-success">プロフィール編集</button></a>
     </div>
 
     <legend>おすすめ書籍を投稿する</legend>

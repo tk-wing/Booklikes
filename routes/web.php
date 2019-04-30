@@ -17,3 +17,5 @@ Route::post('/signup', 'Auth\SignupController@store');
 Route::get('/login', 'Auth\AuthController@index');
 Route::post('/login', 'Auth\AuthController@authenticate');
 Route::get('/logout', 'Auth\AuthController@logout');
+
+Route::resource('/profile', 'ProfileController');
