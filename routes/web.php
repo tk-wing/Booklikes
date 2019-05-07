@@ -19,3 +19,5 @@ Route::post('/login', 'Auth\AuthController@authenticate');
 Route::get('/logout', 'Auth\AuthController@logout');
 
 Route::resource('/profile', 'ProfileController');
+Route::resource('/book', 'BookController');
+Route::resource('/feed', 'FeedController');

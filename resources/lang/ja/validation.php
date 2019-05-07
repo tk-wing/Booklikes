@@ -145,8 +145,11 @@ return [
 
     'attributes' => [
         'categories.*' => 'カテゴリー',
+        'category' => 'カテゴリー',
         'name' => 'お名前',
         'email' => 'メールアドレス',
         'password' => 'パスワード',
+        'title' => 'タイトル',
+        'comment' => 'おすすめ理由',
     ],
 ];

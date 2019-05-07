@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProfileRequest;
 use App\Models\Category;
+use App\Models\Profile;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 class ProfileController extends Controller
 {
@@ -25,9 +28,11 @@ class ProfileController extends Controller
     public function create()
     {
         $categories = Category::all();
+        $profile = auth()->user()->profile;
 
         return view('profile', [
-            'categories' => $categories
+            'categories' => $categories,
+            'profile' => $profile
         ]);
     }
 
@@ -37,9 +42,8 @@ class ProfileController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProfileRequest $request)
     {
-        //
     }
 
     /**
@@ -71,9 +75,30 @@ class ProfileController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ProfileRequest $request, Profile $profile)
     {
-        //
+        $user = auth()->user();
+        $profile = $user->profile;
+
+        if ($request->hasFile('img_name')) {
+            $path = $request->img_name->store('public/user_images');
+            $filename = pathinfo($path, PATHINFO_BASENAME);
+            $user->img_name = $filename;
+        }
+
+        $user->name = $request->name;
+
+        $profile->nickname = $request->nickname;
+        $profile->comment = $request->comment;
+
+        $categoryIds = new Collection($request->category_id);
+        $categoryIds = $categoryIds->unique();
+        $profile->categories()->attach($categoryIds);
+
+        $user->save();
+        $profile->save();
+
+        return redirect('/home');
     }
 
     /**

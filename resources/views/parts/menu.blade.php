@@ -4,16 +4,16 @@
     <nav id="fh5co-main-menu" role="navigation">
         @if(auth()->user())
             <ul>
-                <li class="fh5co-active"><a href="{{ url('/home') }}">マイページ</a></li>
-                <li><a href="my_books.php">自分の投稿</a></li>
-                <li><a href="feeds.php">すべての投稿一覧</a></li>
+                <li class="{{ preg_match('/^\/home/', $current) ? 'fh5co-active' : '' }}"><a href="{{ url('/home') }}">マイページ</a></li>
+                <li class="{{ preg_match('/^\/book/', $current) ? 'fh5co-active' : '' }}"><a href="{{ url('/book') }}">自分の投稿</a></li>
+                <li class="{{ preg_match('/^\/feed/', $current) ? 'fh5co-active' : '' }}"><a href="{{ url('/feed') }}">すべての投稿一覧</a></li>
             </ul>
         @else
             <ul>
                 <li class="fh5co-active"><a href="index.php">Home</a></li>
-                <li><a href="{{ url('/books') }}">Books</a></li>
-                <li><a href="{{ url('/login') }}">サインイン</a></li>
-                <li><a href="{{ url('/signup') }}">新規会員登録</a></li>
+                <li class="{{ preg_match('/^\/book/', $current) ? 'fh5co-active' : '' }}"><a href="{{ url('/book') }}">Books</a></li>
+                <li class="{{ preg_match('/^\/login/', $current) ? 'fh5co-active' : '' }}"><a href="{{ url('/login') }}">サインイン</a></li>
+                <li class="{{ preg_match('/^\/signup/', $current) ? 'fh5co-active' : '' }}"><a href="{{ url('/signup') }}">新規会員登録</a></li>
             </ul>
         @endif
     </nav>

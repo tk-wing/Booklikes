@@ -7,7 +7,8 @@
 <div class="fh5co-narrow-content text-center">
     <legend>{{ auth()->user()->name }}さんのプロフィール編集</legend>
     <div class="edit_wrapper">
-        <form method="POST" action="" class="form-horizontal" enctype="multipart/form-data">
+        <form method="post" action="{{ url("/profile/{$profile->id}") }}" class="form-horizontal" enctype="multipart/form-data">
+            @csrf {{ method_field('patch') }}
             <div class="row">
                 <div class="col-md-4" style="padding-left: 200px;">
                     @if(auth()->user()->img_name)
@@ -25,24 +26,24 @@
 
                 <div class="col-md-8 text-left">
                     <div class="form-group">
-                        <label class="col-md-3 control-label">お名前</label>
+                        <label class="col-md-3 control-label" for="input_name">お名前</label>
                         <div class="col-md-6">
-                            <input id="name" name="name" type="text" placeholder="お名前" value="{{ auth()->user()->name }}" class="form-control input-md">
+                            <input id="input_name" name="name" type="text" placeholder="お名前" value="{{ auth()->user()->name }}" class="form-control input-md">
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="col-md-3 control-label">ニックネーム(任意)</label>
+                        <label class="col-md-3 control-label" for="input_nickname">ニックネーム(任意)</label>
                         <div class="col-md-6">
-                            <input id="nickname" name="nickname" type="text" placeholder="ニックネーム(任意)" value="" class="form-control input-md">
+                            <input id="input_nickname" name="nickname" type="text" placeholder="ニックネーム(任意)" value="{{ $profile->nickname }}" class="form-control input-md">
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="col-md-3 control-label">好きな本のジャンル<br>(任意)</label>
+                        <label class="col-md-3 control-label" for='input_category_id'>好きな本のジャンル<br>(任意)</label>
                         <div class="col-md-6">
-                            <select id="category_id" name="category_id" class="form-control">
-                                <option value="">選択してください</option>
+                            <select id="input_category_id" name="category_id[]" class="form-control">
+                                <option disabled selected>選択してください</option>
                                 @foreach ($categories as $category)
                                     <option value="{{ $category->id }}">{{ $category->name }}</option>
                                 @endforeach
@@ -51,9 +52,9 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="col-md-3 control-label">自己紹介＆メッセージ(任意)</label>
+                        <label class="col-md-3 control-label" for="input_comment">自己紹介＆メッセージ(任意)</label>
                         <div class="col-md-8">
-                            <textarea class="form-control" id="comment" name="comment" placeholder="自己紹介＆メッセージ(任意)" style="height: 200px;"></textarea>
+                            <textarea class="form-control" id="input_comment" name="comment" placeholder="自己紹介＆メッセージ(任意)" style="height: 200px;">{{ $profile->comment }}</textarea>
                         </div>
                     </div>
 

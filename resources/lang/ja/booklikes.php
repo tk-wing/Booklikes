@@ -6,5 +6,8 @@ return [
     ],
     'validation' => [
         'alpha_num' => ':attributeは、半角英数字(混在)で入力してください。',
+        'required' =>[
+            'selected' => ':attributeは、必ず選択してください。',
+        ],
     ]
 ];

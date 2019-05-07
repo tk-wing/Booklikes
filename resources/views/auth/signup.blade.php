@@ -16,7 +16,7 @@
         <div class="form-group">
             <label class="col-md-4 control-label" for="input-name">お名前</label>
             <div class="col-md-4">
-                <input id="input-name" name="name" type="text" placeholder="お名前" value="" class="form-control input-md {{ $errors->has('name') ? 'is-invalid' : '' }}">
+                <input id="input-name" name="name" type="text" placeholder="お名前" value="{{ old('name') }}" class="form-control input-md {{ $errors->has('name') ? 'is-invalid' : '' }}">
                 <ul class="invalid-feedback" style="list-style-type: none">
                     @foreach($errors->get('name') as $message)
                         <li>{{ $message }}</li>
@@ -28,7 +28,7 @@
         <div class="form-group">
             <label class="col-md-4 control-label" for="input-email">メールアドレス</label>
             <div class="col-md-4">
-                <input id="input-email" name="email" type="text" placeholder="メールアドレス" value="" class="form-control input-md {{ $errors->has('email') ? 'is-invalid' : '' }}">
+                <input id="input-email" name="email" type="text" placeholder="メールアドレス" value="{{ old('email') }}" class="form-control input-md {{ $errors->has('email') ? 'is-invalid' : '' }}">
                 <ul class="invalid-feedback" style="list-style-type: none">
                     @foreach($errors->get('email') as $message)
                         <li>{{ $message }}</li>

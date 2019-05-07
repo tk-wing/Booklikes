@@ -43,6 +43,9 @@
 	<link rel="stylesheet" href="{{ asset('/css/style.css') }}">
 	<!-- Modernizr JS -->
     <script src="{{ asset('/js/modernizr-2.6.2.min.js') }}"></script>
+    <!-- FontAwesome読み込み -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" crossorigin="anonymous">
+
     <!-- jQuery読み込み -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     @yield('script')
@@ -51,7 +54,9 @@
 	<body>
 	<div id="fh5co-page">
 		<a href="#" class="js-fh5co-nav-toggle fh5co-nav-toggle"><i></i></a>
-        @include('parts.menu')
+        @include('parts.menu', [
+            'current' => $_SERVER['PATH_INFO']
+        ])
 
 		<div id="fh5co-main">
 			@yield('content')

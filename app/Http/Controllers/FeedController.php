@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
+use App\Models\Book;
 use Illuminate\Http\Request;
 
-class HomeController extends Controller
+class FeedController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,17 +14,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        if(auth()->user()){
-            $user = auth()->user();
-            $user->load('profile', 'profile.categories');
-            $categories = Category::all();
-            return view('index', [
-                'user' => $user,
-                'profile' => $user->profile,
-                'categories' => $categories,
-            ]);
-        }
-        return view('index');
+        $books = Book::with('user',  'user.profile' ,'category')->orderBy('created_at', 'desc')->get();
+        return view('feed.index', [
+            'books' => $books
+        ]);
     }
 
     /**
