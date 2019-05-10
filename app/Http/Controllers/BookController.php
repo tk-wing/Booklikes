@@ -16,15 +16,22 @@ class BookController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $books = Book::find(auth()->user()->id);
+        $keyword = $request->keyword;
         $user = auth()->user();
-        $user->load('books', 'books.category');
-        $books = $user->books->sortByDesc('created_at');
+        $bookshelves = $user->bookshelves;
+
+        if ($keyword) {
+            $books = $user->books()->where('title', 'like', '%'.$keyword.'%')->with('category')->orderBy('created_at', 'desc')->paginate(12);
+        } else {
+            $books = $user->books()->with('category')->orderBy('created_at', 'desc')->paginate(12);
+        }
 
         return view('book.index', [
             'books' => $books,
+            'keyword' => $keyword,
+            'bookshelves' => $bookshelves
         ]);
     }
 
@@ -35,7 +42,10 @@ class BookController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::all();
+        return view('book.create', [
+            'categories' => $categories,
+        ]);
     }
 
     /**
@@ -49,8 +59,13 @@ class BookController extends Controller
         $book = new Book();
 
         if ($request->hasFile('img_name')) {
-            $path = $request->img_name->store('public/book_images');
-            $filename = pathinfo($path, PATHINFO_BASENAME);
+            $realPath = $request->img_name->getRealPath();
+            $filename = hash_file('sha256', $realPath);
+            $extension = $request->img_name->getClientOriginalExtension();
+            $filename = "$filename.$extension";
+            if (Book::where('img_name', $filename)->doesntExist()) {
+                $request->img_name->storeAs('public/book_images', $filename);
+            }
             $book->img_name = $filename;
         }
 
@@ -99,9 +114,14 @@ class BookController extends Controller
      */
     public function update(BookUpdateRequest $request, Book $book)
     {
-        if($request->hasFile('img_name')){
-            $path = $request->img_name->store('public/book_images');
-            $filename = pathinfo($path, PATHINFO_BASENAME);
+        if ($request->hasFile('img_name')) {
+            $realPath = $request->img_name->getRealPath();
+            $filename = hash_file('sha256', $realPath);
+            $extension = $request->img_name->getClientOriginalExtension();
+            $filename = "$filename.$extension";
+            if (Book::where('img_name', $filename)->doesntExist()) {
+                $request->img_name->storeAs('public/book_images', $filename);
+            }
             $book->img_name = $filename;
         }
 
@@ -125,5 +145,39 @@ class BookController extends Controller
         $book->delete();
 
         return redirect('/book');
+    }
+
+    public function liked(Book $book)
+    {
+        auth()->user()->likes()->attach($book->id);
+    }
+
+    public function unlike(Book $book)
+    {
+        auth()->user()->likes()->detach($book->id);
+    }
+
+    public function favorite(Request $request)
+    {
+        $keyword = $request->keyword;
+        $user = auth()->user();
+        $bookshelves = $user->bookshelves;
+        if ($keyword) {
+            $books = $user->likedBooks()->where('title', 'like', '%'.$keyword.'%')->orderBy('created_at', 'desc')->paginate(12);
+        } else {
+            $books = $user->likedBooks()->orderBy('created_at', 'desc')->paginate(12);
+        }
+
+        return view('book.favorite', [
+            'books' => $books,
+            'keyword' => $keyword,
+            'bookshelves' => $bookshelves
+        ]);
+    }
+
+    public function add(Book $book, Request $request){
+        $book->bookshelves()->attach($request->bookshelf);
+
+        return redirect("/bookshelf/{$request->bookshelf}");
     }
 }

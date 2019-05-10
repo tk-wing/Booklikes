@@ -144,12 +144,13 @@ return [
     */
 
     'attributes' => [
-        'categories.*' => 'カテゴリー',
-        'category' => 'カテゴリー',
+        'categories' => 'ジャンル',
+        'category' => 'ジャンル',
         'name' => 'お名前',
         'email' => 'メールアドレス',
         'password' => 'パスワード',
         'title' => 'タイトル',
         'comment' => 'おすすめ理由',
+        'img_name' => '画像',
     ],
 ];

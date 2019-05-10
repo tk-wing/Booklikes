@@ -10,7 +10,7 @@
             <form method="post" action="{{ url("/book/{$book->id}") }}" class="form-horizontal" enctype="multipart/form-data">
                 @csrf
                 {{ method_field('patch') }}
-                @include('parts.form', [
+                @include('parts.book.form', [
                     'update' => true,
                     'img_name' => $book->img_name,
                     'title' => $book->title,

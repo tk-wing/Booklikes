@@ -39,7 +39,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="entry form-group">
                         <label class="col-md-3 control-label" for='input_category_id'>好きな本のジャンル<br>(任意)</label>
                         <div class="col-md-6">
                             <select id="input_category_id" name="category_id[]" class="form-control">
@@ -64,4 +64,27 @@
         </form>
     </div>
 </div>
+@endsection
+
+@section('script_bottom')
+<script>
+    $(function () {
+        $(document).on('click', '.btn-add', function (e) {
+            e.preventDefault();
+            var controlForm = $('.controls'),
+                currentEntry = $(this).parents('.entry:first'),
+                newEntry = $(currentEntry.clone()).appendTo(controlForm);
+            newEntry.find('input').val('');
+            controlForm.find('.entry:not(:last) .btn-add')
+                .removeClass('btn-add').addClass('btn-remove')
+                .removeClass('btn-success').addClass('btn-danger')
+                .html('<i class="fas fa-minus"></i>');
+        }).on('click', '.btn-remove', function (e) {
+            $(this).parents('.entry:first').remove();
+            e.preventDefault();
+
+            return false;
+        });
+    });
+</script>
 @endsection

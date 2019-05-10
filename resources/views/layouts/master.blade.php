@@ -8,7 +8,7 @@
 	<meta name="description" content="Free HTML5 Website Template by FreeHTML5.co" />
 	<meta name="keywords" content="free html5, free template, free bootstrap, free website template, html5, css3, mobile first, responsive" />
 	<meta name="author" content="FreeHTML5.co" />
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
   	<!--
 	//////////////////////////////////////////////////////
 
@@ -74,6 +74,8 @@
 	<!-- Flexslider -->
 	<script src="{{ asset('/js/jquery.flexslider-min.js') }}"></script>
 	<!-- MAIN JS -->
-	<script src="{{ asset('/js/main.js') }}"></script>
+    <script src="{{ asset('/js/main.js') }}"></script>
+
+    @yield('script_bottom')
 	</body>
 </html>

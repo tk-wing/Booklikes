@@ -1,17 +1,17 @@
 @extends('layouts.master')
-@section('title', 'AllBooks')
+@section('title', 'MyBookshelves')
 @section('content')
-
 <div class="fh5co-narrow-content">
-    <h2 class="fh5co-heading animate-box" data-animate-effect="fadeInLeft">All Books</h2>
+    <h2 class="fh5co-heading animate-box" data-animate-effect="fadeInLeft">My Bookshelves / {{ $bookshelf->title }}</h2>
+    @include('parts.dropdown')
     <form method="get" class="form-horizontal">
         @include('parts.search')
     </form>
     @include('parts.book.card', [
         'editable' => false,
-        'feed' => true,
-        'removableFromBookshelf' => false,
-        'add' => 'ture',
+        'feed' => false,
+        'removableFromBookshelf' => true,
+        'add' => false,
         'paginate' => true,
     ])
 </div>

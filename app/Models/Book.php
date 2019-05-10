@@ -19,4 +19,25 @@ class Book extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function bookshelves(){
+        return $this->belongsToMany(Bookshelf::class, 'bookshelves_has_books');
+    }
+
+    public function likeUsers(){
+        return $this->belongsToMany(User::class, 'likes');
+    }
+
+    public function likedBook(){
+        return $this->belongsToMany(self::class, 'likes');
+    }
+
+    public function liked(){
+        $search = $this->likeUsers->search(function ($liked){
+            return $liked->pivot->user_id === auth()->user()->id;
+        });
+
+        return $search !== false;
+    }
+
 }

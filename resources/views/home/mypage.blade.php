@@ -14,32 +14,33 @@
                 @endif
             </div>
             <div class="col-md-7">
-                <div>
-                    ＜好きな本のジャンル＞<br>
-                    @foreach($profile->categories as $category)
-                        {{ $category->name }}
-                    @endforeach
-                </div>
-                <div>
-                    ＜自己紹介＆メッセージ＞
-                    <p>{{ $profile->comment }}</p>
-                </div>
+                @if($profile->categories->isNotEmpty())
+                    <div>
+                        ＜好きな本のジャンル＞<br>
+                        @foreach($profile->categories as $category)
+                            {{ $category->name }}
+                        @endforeach
+                    </div>
+                @endif
+                @if($profile->comment)
+                    <div>
+                        ＜自己紹介＆メッセージ＞
+                        <p>{{ $profile->comment }}</p>
+                    </div>
+                @endif
             </div>
         </div>
         <a href="{{ url('/profile/create') }}"><button type="button" class="btn btn-success">プロフィール編集</button></a>
     </div>
 
-    <legend>おすすめ書籍を投稿する</legend>
+    <legend>最近の投稿</legend>
         <div class="feed_wrapper">
-            <form method="post" action="{{ url('/book') }}" class="form-horizontal" enctype="multipart/form-data">
-                @csrf
-                @include('parts.form', [
-                    'update' => false,
-                    'img_name' => null,
-                    'title' => null,
-                    'categoryId' => null,
-                    'comment' => null,
-                ])
-            </form>
+            @include('parts.book.card', [
+                'feed' => false,
+                'editable' => false,
+                'removableFromBookshelf' => false,
+                'add' => false,
+                'paginate' => false,
+            ])
         </div>
   </div>

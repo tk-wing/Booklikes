@@ -23,11 +23,31 @@ class User extends Authenticatable
         return $this->hasMany(Book::class);
     }
 
+    public function bookshelves()
+    {
+        return $this->hasMany(Bookshelf::class);
+    }
+
+    public function likedBooks()
+    {
+        return $this->belongsToMany(Book::class, 'likes');
+    }
+
+    public function likes()
+    {
+        return $this->belongsToMany(self::class, 'likes', 'user_id', 'book_id');
+    }
+
     public function store($request)
     {
         if ($request->hasFile('img_name')) {
-            $path = $request->img_name->store('public/user_images');
-            $filename = pathinfo($path, PATHINFO_BASENAME);
+            $realPath = $request->img_name->getRealPath();
+            $filename = hash_file('sha256', $realPath);
+            $extension = $request->img_name->getClientOriginalExtension();
+            $filename = "$filename.$extension";
+            if (self::where('img_name', $filename)->doesntExist()) {
+                $request->img_name->storeAs('public/user_images', $filename);
+            }
             $this->img_name = $filename;
         }
 

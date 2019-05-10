@@ -11,13 +11,23 @@
 |
 */
 
+Route::group(['middleware' => 'auth'], function() {
+    Route::resource('/profile', 'ProfileController');
+    Route::get('/book/favorite', 'BookController@favorite');
+    Route::post('/book/{book}', 'BookController@add');
+    Route::resource('/book', 'BookController');
+    Route::resource('/bookshelf', 'BookShelfController');
+    Route::resource('/feed', 'FeedController');
+    Route::post('/like/{book}', 'BookController@liked');
+    Route::delete('/like/{book}', 'BookController@unlike');
+});
+
+Route::get('/home/book', 'HomeController@bookIndex');
 Route::resource('/home', 'HomeController');
 Route::get('/signup', 'Auth\SignupController@create');
 Route::post('/signup', 'Auth\SignupController@store');
-Route::get('/login', 'Auth\AuthController@index');
+Route::get('/login', 'Auth\AuthController@index')->name('login');
 Route::post('/login', 'Auth\AuthController@authenticate');
 Route::get('/logout', 'Auth\AuthController@logout');
 
-Route::resource('/profile', 'ProfileController');
-Route::resource('/book', 'BookController');
-Route::resource('/feed', 'FeedController');
+

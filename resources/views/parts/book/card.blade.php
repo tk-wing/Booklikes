@@ -7,10 +7,25 @@
                     <h3 class="overflow">{{ $book->title }}</h3>
                     <span><small></small>{{ $book->created_at }}</span>
 
-                    <span style="display: inline-block;"><i class="fas fa-heart"></i></span>
-                    <span style="display: inline-block;"><i style="color: red;" class="fas fa-heart"></i></span>
-                    <span class="like_count" style="display: inline-block; margin-left: 3px;"></span>
-                    <span style="display: inline-block;">いいね</span><br>
+                    @if($feed)
+                        <span hidden class="feed_id" style="display: none;">{{ $book->id}}</span>
+                        <span hidden id="signin_user" style="display: none;">{{ auth()->user()->id }}</span>
+                        @if($book->liked())
+                            <button class="btn unlike"><i style="color: red;" class="fas fa-heart"></i></button>
+                        @else
+                            <button class="btn like"><i class="far fa-heart"></i></button>
+                        @endif
+                        <span class="like_count" style="display: inline-block; margin-right: 3px;">{{ $book->likedbook->count() }}</span>
+                        <span style="display: inline-block;">いいね</span><br>
+                    @else
+                        @if($book->likedbook->isEmpty())
+                            <span style="display: inline-block;"><i class="fas fa-heart"></i></span>
+                        @else
+                            <span style="display: inline-block;"><i style="color: red;" class="fas fa-heart"></i></span>
+                        @endif
+                        <span class="like_count" style="display: inline-block; margin-left: 3px;">{{ $book->likedbook->count() }}</span>
+                        <span style="display: inline-block;">いいね</span><br>
+                    @endif
 
                     <a href="#" data-toggle="modal" data-target="#demoNormalModal{{ $book->id }}" class="lead">Read More <i class="icon-arrow-right3"></i></a><br>
                     @if($editable)
@@ -20,6 +35,15 @@
                                 <button type="submit" class="btn btn-danger" onclick="return confirm('この投稿を削除しますか？')">削除</button>
                             </form>
                             <a href="{{ url("/book/{$book->id}") }}"><button type="button" class="btn btn-success">編集</button></a>
+                        </div>
+                    @endif
+
+                    @if($removableFromBookshelf)
+                        <div class="text-center" style="margin-top: 8px;">
+                            <form method="post" action="{{ url("/book/{$book->id}")}}" style="display: inline;">
+                                @csrf {{ method_field('delete')}}
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('この本棚を削除しますか？')">削除</button>
+                            </form>
                         </div>
                     @endif
 
@@ -55,6 +79,20 @@
                         <img src="{{ asset("storage/book_images/{$book->img_name}") }}" class="img-responsive" width="100%" height="100%" alt="Free HTML5 Bootstrap Template by FreeHTML5.co">
                         <p class="nomal" style="font-size: 15px;">{{ $book->comment }}</p>
                     </div>
+                    <div class="modal-body text-center">
+                        @if($add)
+                            <form method="post" action="{{ url("/book/{$book->id}") }}">
+                                @csrf
+                                <select name="bookshelf" class="form-control">
+                                    <option disabled selected value>選択してください</option>
+                                    @foreach ($bookshelves as $bookshelf)
+                                        <option value="{{ $bookshelf->id }}">{{ $bookshelf->title }}</option>
+                                    @endforeach
+                                </select>
+                                <button type='submit' class='btn btn-success mt-3'>この本を本棚に追加する</button>
+                            </form>
+                        @endif
+                    </div>
                     <div class="modal-footer text-center">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
                     </div>
@@ -63,3 +101,11 @@
         </div>
     @endforeach
 </div>
+@if($paginate)
+    <div class='text-center'>
+        {{ $books->appends(['keyword' => $keyword])->links() }}
+    </div>
+@endif
+@section('script_bottom')
+    <script src="{{ asset('/js/my.js') }}"></script>
+@endsection

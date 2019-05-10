@@ -12,11 +12,20 @@ class FeedController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $books = Book::with('user',  'user.profile' ,'category')->orderBy('created_at', 'desc')->get();
+        $keyword = $request->keyword;
+        $bookshelves = auth()->user()->bookshelves;
+        if($keyword){
+            $books = Book::where('title', 'like', '%'.$keyword.'%')->with('user', 'user.profile' ,'category')->orderBy('created_at', 'desc')->paginate(12);
+        }else{
+            $books = Book::with('user', 'user.profile' ,'category')->orderBy('created_at', 'desc')->paginate(12);
+        }
+
         return view('feed.index', [
-            'books' => $books
+            'books' => $books,
+            'keyword' => $keyword,
+            'bookshelves' => $bookshelves
         ]);
     }
 

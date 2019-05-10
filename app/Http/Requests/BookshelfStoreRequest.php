@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class BookStoreRequest extends FormRequest
+class BookshelfStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,17 +24,9 @@ class BookStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'category' => ['required', 'integer', 'exists:categories,id'],
             'title' => ['required'],
-            'comment' => ['required'],
-            'img_name' => ['required' ,'image'],
-        ];
-    }
-
-    public function messages()
-    {
-        return [
-            'category.required' => __('booklikes.validation.required.selected')
+            'categories' => ['required', 'array'],
+            'categories.*' => ['integer', 'exists:categories,id']
         ];
     }
 }

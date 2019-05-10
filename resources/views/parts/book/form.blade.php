@@ -1,15 +1,20 @@
 <div class="row">
     <div class="col-md-4" style="padding-left: 100px;">
         @if($update)
-            <img id="img1" src="{{ asset("storage/book_images/{$img_name}")}}" style="width:300px;height:200px;"><br>
+            <img id="img1" src="{{ asset("storage/book_images/{$img_name}")}}" style="width:100%;height:200px;"><br>
         @else
             <img id="img1" src="https://placehold.jp/300x200.png" style="width:300px;height:200px;"><br>
         @endif
         <label>
+        <input type="file" class="filesend form-control {{ $errors->has('img_name') ? 'is-invalid' : '' }}" id="filesend" name="img_name" accept="image/*" style="display: none;">
+        <ul class="invalid-feedback" style="list-style-type: none">
+            @foreach($errors->get('img_name') as $message)
+                <li>{{ $message }}</li>
+            @endforeach
+        </ul>
         <span class="filelabel" title="ファイルを選択">
             選択
         </span>
-        <input type="file" class="filesend" id="filesend" name="img_name" accept="image/*" style="display: none;">
         </label><br>
     </div>
     <div class="col-md-8 text-left">

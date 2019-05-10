@@ -1,5 +1,4 @@
 $(function() {
-
     // 新規登録
     $(document).on('click', '#register', function() {
         var name = $(this).find('#name').text();
@@ -41,27 +40,27 @@ $(function() {
         var like_btn = $(this);
         var like_count = $(this).siblings('.like_count').text();
 
-        console.log(like_count);
+        // console.log(like_count);
+
+        console.log(feed_id);
+        console.log(user_id);
 
         $.ajax({
-            url:'like.php',
-            type:'POST',
-            datatype: 'json',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                "Content-type": "application/json"
+              },
+            url:'/like/' + feed_id,
+            type:'post',
             data:{
-              'feed_id':feed_id,
-              'user_id':user_id,
-              'is_liked':true
             }
         })
-        .done(function(data){
-            if (data == 'true') {
+        .done(function(){
                 like_count++;
                 like_btn.siblings('.like_count').text(like_count);
                 like_btn.removeClass('like');
                 like_btn.addClass('unlike');
                 like_btn.html('<i style="color: red;" class="fas fa-heart"></i>');
-            }
-          console.log(data);
         })
         .fail(function(err){
           // 目的の処理が失敗したときの処理
@@ -76,35 +75,26 @@ $(function() {
         var like_btn = $(this);
         var like_count = $(this).siblings('.like_count').text();
 
-        console.log(feed_id);
-        console.log(user_id);
-
       $.ajax({
-          url: 'like.php',
-          type:'POST',
-          datatype: 'json',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+            "Content-type": "application/json"
+          },
+          url: '/like/' + feed_id,
+          type:'delete',
           data:{
-            'feed_id':feed_id,
-            'user_id':user_id,
           }
 
       })
-      .done(function(data){
-          if (data == 'true') {
-              like_count--;
-              like_btn.siblings('.like_count').text(like_count);
-              like_btn.removeClass('unlike');
-              like_btn.addClass('like');
-              like_btn.html('<i class="far fa-heart"></i>');
-
-
-          }
-          console.log(data);
-
-
+      .done(function(){
+            like_count--;
+            like_btn.siblings('.like_count').text(like_count);
+            like_btn.removeClass('unlike');
+            like_btn.addClass('like');
+            like_btn.html('<i class="far fa-heart"></i>');
       })
       .fail(function(err){
-
+        console.log('error');
       })
 
     });
