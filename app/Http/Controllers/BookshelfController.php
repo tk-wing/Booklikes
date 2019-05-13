@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Book;
 use App\Models\Bookshelf;
 use App\Models\Category;
 use App\Http\Requests\BookshelfStoreRequest;
 use App\Http\Requests\BookshelfUpdateRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use App\Http\Requests\BookRemoveRequest;
+use App\Http\Requests\BookshelfDeleteRequest;
 
 class BookShelfController extends Controller
 {
@@ -108,8 +111,18 @@ class BookShelfController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Bookshelf $bookshelf)
+    public function destroy(Bookshelf $bookshelf, BookshelfDeleteRequest $request)
     {
-        dd($bookshelf);
+        $bookshelf->books()->detach();
+        $bookshelf->categories()->detach();
+        $bookshelf->delete();
+
+        return redirect('/bookshelf');
+    }
+
+    public function remove(Bookshelf $bookshelf, Book $book, BookRemoveRequest $request){
+        $bookshelf->books()->detach($book->id);
+
+        return redirect("/bookshelf/{$bookshelf->id}");
     }
 }

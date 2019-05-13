@@ -1,49 +1,37 @@
 $(function() {
-    // 新規登録
-    $(document).on('click', '#register', function() {
-        var name = $(this).find('#name').text();
-        var email = $(this).find('#email').text();
-        var pw = $(this).find('#password').text();
-        var img_name = $(this).find('#img_name').text();
+
+    // 本棚登録のバリデーション
+    $(document).on('click', '.add', function() {
+    var bookId = $(this).siblings('.book_id').text();
+    // 選択されているvalue属性値を取り出す
+    var bookshelf = $(this).siblings('[name=bookshelf]').val();
+    console.log(bookshelf);
+    console.log(bookId);
+
         $.ajax({
-            url:'register.php',
-            type:'POST',
-            datatype: 'json',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                "Content-type": "application/json"
+              },
+            url:'/book/' + bookId + '/bookshelf/' + bookshelf,
+            type:'post',
             data:{
-              'name':name,
-              'email':email,
-              'pw':pw,
-              'img_name':img_name,
             }
         })
         .done(function(data){
-          console.log('true');
+            location.href = data;
         })
         .fail(function(err){
-          console.log('error');
+            console.log('error');
         })
 
-    });
-
-    // カテゴリーのアコーディオン
-    $(document).on('click', '#category', function(){
-      var content = $(this).find('.contents');
-      content.addClass('open');
-      content.slideDown();
-      $(this).find('#index').text('-');
     });
 
     // いいねカウント
     $(document).on('click', '.like', function() {
         var feed_id = $(this).siblings('.feed_id').text();
-        var user_id = $('#signin_user').text();
         var like_btn = $(this);
         var like_count = $(this).siblings('.like_count').text();
-
-        // console.log(like_count);
-
-        console.log(feed_id);
-        console.log(user_id);
 
         $.ajax({
             headers: {
@@ -63,7 +51,6 @@ $(function() {
                 like_btn.html('<i style="color: red;" class="fas fa-heart"></i>');
         })
         .fail(function(err){
-          // 目的の処理が失敗したときの処理
           console.log('error');
         })
 
@@ -71,7 +58,6 @@ $(function() {
 
     $(document).on('click', '.unlike', function(){
         var feed_id = $(this).siblings('.feed_id').text();
-        var user_id = $('#signin_user').text();
         var like_btn = $(this);
         var like_count = $(this).siblings('.like_count').text();
 

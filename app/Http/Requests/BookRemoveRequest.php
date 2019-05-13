@@ -2,11 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Bookshelf;
-use App\Rules\BookAddRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class BookAddRequest extends FormRequest
+class BookRemoveRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -15,8 +13,7 @@ class BookAddRequest extends FormRequest
      */
     public function authorize()
     {
-        $bookshelf = Bookshelf::find($this->bookshelf);
-        return auth()->user()->id === $bookshelf->user_id;
+        return auth()->user()->id === $this->bookshelf->user_id;
     }
 
     /**
@@ -27,7 +24,7 @@ class BookAddRequest extends FormRequest
     public function rules()
     {
         return [
-            'bookshelf' => [new BookAddRule($this->book)],
+            //
         ];
     }
 }

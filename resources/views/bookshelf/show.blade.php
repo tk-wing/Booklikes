@@ -9,7 +9,7 @@
     </form>
     @include('parts.book.card', [
         'editable' => false,
-        'feed' => false,
+        'feed' => true,
         'removableFromBookshelf' => true,
         'add' => false,
         'paginate' => true,

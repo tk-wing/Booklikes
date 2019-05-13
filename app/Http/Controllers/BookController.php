@@ -6,8 +6,10 @@ use App\Http\Requests\BookStoreRequest;
 use App\Http\Requests\BookDeleteRequest;
 use App\Http\Requests\BookUpdateRequest;
 use App\Models\Book;
+use App\Models\Bookshelf;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Requests\BookAddRequest;
 
 class BookController extends Controller
 {
@@ -142,6 +144,7 @@ class BookController extends Controller
      */
     public function destroy(Book $book, BookDeleteRequest $request)
     {
+        $book->bookshelves()->detach();
         $book->delete();
 
         return redirect('/book');
@@ -175,9 +178,9 @@ class BookController extends Controller
         ]);
     }
 
-    public function add(Book $book, Request $request){
-        $book->bookshelves()->attach($request->bookshelf);
+    public function add(Book $book, Bookshelf $bookshelf){
+        $book->bookshelves()->attach($bookshelf->id);
 
-        return redirect("/bookshelf/{$request->bookshelf}");
+        echo url("/bookshelf/{$bookshelf->id}");
     }
 }

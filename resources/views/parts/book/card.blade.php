@@ -38,15 +38,6 @@
                         </div>
                     @endif
 
-                    @if($removableFromBookshelf)
-                        <div class="text-center" style="margin-top: 8px;">
-                            <form method="post" action="{{ url("/book/{$book->id}")}}" style="display: inline;">
-                                @csrf {{ method_field('delete')}}
-                                <button type="submit" class="btn btn-danger" onclick="return confirm('この本棚を削除しますか？')">削除</button>
-                            </form>
-                        </div>
-                    @endif
-
                     @if($feed)
                         <div class="text-center" style="margin-top: 8px;">
                             @if($book->user->img_name)
@@ -62,6 +53,16 @@
                             @endif
                         </div>
                     @endif
+
+                    @if($removableFromBookshelf)
+                        <div class="text-center" style="margin-top: 8px;">
+                            <form method="post" action="{{ url("/bookshelf/{$bookshelf->id}/book/{$book->id}")}}" style="display: inline;">
+                                @csrf {{ method_field('delete')}}
+                                <button type="submit" class="btn btn-danger " onclick="return confirm('この本棚を削除しますか？')">削除</button>
+                            </form>
+                        </div>
+                    @endif
+
                 </div>
             </div>
         </div>
@@ -81,16 +82,17 @@
                     </div>
                     <div class="modal-body text-center">
                         @if($add)
-                            <form method="post" action="{{ url("/book/{$book->id}") }}">
-                                @csrf
+                            <span hidden class="book_id" style="display: none;">{{ $book->id }}</span>
+                            {{-- <form method="post" action="{{ url("/book/{$book->id}") }}"> --}}
+                                {{-- @csrf --}}
                                 <select name="bookshelf" class="form-control">
                                     <option disabled selected value>選択してください</option>
                                     @foreach ($bookshelves as $bookshelf)
                                         <option value="{{ $bookshelf->id }}">{{ $bookshelf->title }}</option>
                                     @endforeach
                                 </select>
-                                <button type='submit' class='btn btn-success mt-3'>この本を本棚に追加する</button>
-                            </form>
+                                <button type='button' class='btn btn-success add mt-3'>この本を本棚に追加する</button>
+                            {{-- </form> --}}
                         @endif
                     </div>
                     <div class="modal-footer text-center">
