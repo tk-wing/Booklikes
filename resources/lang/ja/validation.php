@@ -152,5 +152,6 @@ return [
         'title' => 'タイトル',
         'comment' => 'おすすめ理由',
         'img_name' => '画像',
+        'bookshelf' => '本棚',
     ],
 ];

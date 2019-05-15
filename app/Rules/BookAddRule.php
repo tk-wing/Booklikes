@@ -36,6 +36,6 @@ class BookAddRule implements Rule
      */
     public function message()
     {
-        return 'The validation error message.';
+        return __('booklikes.validation.bookshelf.exists');
     }
 }

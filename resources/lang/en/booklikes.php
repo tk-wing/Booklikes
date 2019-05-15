@@ -9,5 +9,8 @@ return [
         'required' => [
             'selected' => ':attribute must be select',
         ],
+        'bookshelf' => [
+            'exists' => 'This book has been already added to :attribute.',
+        ],
     ]
 ];

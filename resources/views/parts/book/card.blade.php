@@ -83,16 +83,17 @@
                     <div class="modal-body text-center">
                         @if($add)
                             <span hidden class="book_id" style="display: none;">{{ $book->id }}</span>
-                            {{-- <form method="post" action="{{ url("/book/{$book->id}") }}"> --}}
-                                {{-- @csrf --}}
+                            <form method="post" action="" class="AjaxForm">
+                                @csrf
                                 <select name="bookshelf" class="form-control">
                                     <option disabled selected value>選択してください</option>
                                     @foreach ($bookshelves as $bookshelf)
                                         <option value="{{ $bookshelf->id }}">{{ $bookshelf->title }}</option>
                                     @endforeach
                                 </select>
-                                <button type='button' class='btn btn-success add mt-3'>この本を本棚に追加する</button>
-                            {{-- </form> --}}
+                                <ul class="invalid-feedback result" style="list-style-type: none"></ul>
+                                <button type='submit' class='btn btn-success add mt-3'>この本を本棚に追加する</button>
+                            </form>
                         @endif
                     </div>
                     <div class="modal-footer text-center">

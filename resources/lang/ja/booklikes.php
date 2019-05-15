@@ -9,5 +9,8 @@ return [
         'required' =>[
             'selected' => ':attributeは、必ず選択してください。',
         ],
+        'bookshelf' => [
+            'exists' => 'この本は既に:attributeに登録されています。',
+        ],
     ]
 ];

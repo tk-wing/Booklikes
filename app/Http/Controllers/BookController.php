@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BookAddRequest;
 use App\Http\Requests\BookStoreRequest;
 use App\Http\Requests\BookDeleteRequest;
 use App\Http\Requests\BookUpdateRequest;
@@ -9,7 +10,6 @@ use App\Models\Book;
 use App\Models\Bookshelf;
 use App\Models\Category;
 use Illuminate\Http\Request;
-use App\Http\Requests\BookAddRequest;
 
 class BookController extends Controller
 {
@@ -178,9 +178,11 @@ class BookController extends Controller
         ]);
     }
 
-    public function add(Book $book, Bookshelf $bookshelf){
+    public function add(Book $book, Bookshelf $bookshelf, BookAddRequest $request){
         $book->bookshelves()->attach($bookshelf->id);
-
-        echo url("/bookshelf/{$bookshelf->id}");
+        return response()->json([
+            'responseText' => url("/bookshelf/{$bookshelf->id}"),
+        ]);
+        // echo url("/bookshelf/{$bookshelf->id}");
     }
 }

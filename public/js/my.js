@@ -1,33 +1,38 @@
 $(function() {
 
     // 本棚登録のバリデーション
-    $(document).on('click', '.add', function() {
-    var bookId = $(this).siblings('.book_id').text();
-    // 選択されているvalue属性値を取り出す
-    var bookshelf = $(this).siblings('[name=bookshelf]').val();
-    console.log(bookshelf);
-    console.log(bookId);
-
+    $('.AjaxForm').on('submit', function() {
+        event.preventDefault();
+        var bookId = $(this).siblings('.book_id').text();
+        var bookshelf = $(this).find('[name=bookshelf]').val();
+        var form = $(this);
         $.ajax({
+            url: form.attr('action'),
+            type: form.attr('method'),
             headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                "Content-type": "application/json"
-              },
-            url:'/book/' + bookId + '/bookshelf/' + bookshelf,
-            type:'post',
-            data:{
-            }
-        })
-        .done(function(data){
-            location.href = data;
-        })
-        .fail(function(err){
-            console.log('error');
-        })
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    },
+                url:'/book/' + bookId + '/bookshelf/' + bookshelf,
+                type:'post',
+                dataType:'json',
+                data:{
+                    'bookshelf': bookshelf,
+                },
+            })
+            .done(function(data){
+                location.href = data.responseText;
+            })
+            .fail(function(err){
+                form.find('.form-control').addClass('is-invalid');
+                var errors = err.responseJSON.errors.bookshelf;
+                errors.forEach(function(error){
+                    $(form.find('.result')).append('<li>'+error+'</li>');
+                });
+            })
 
     });
 
-    // いいねカウント
+    // いいね
     $(document).on('click', '.like', function() {
         var feed_id = $(this).siblings('.feed_id').text();
         var like_btn = $(this);
