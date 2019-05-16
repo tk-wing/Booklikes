@@ -82,8 +82,7 @@
                     </div>
                     <div class="modal-body text-center">
                         @if($add)
-                            <span hidden class="book_id" style="display: none;">{{ $book->id }}</span>
-                            <form method="post" action="" class="AjaxForm">
+                            <form method="post" action="{{ url("/book/{$book->id}/bookshelf") }}" class="AjaxFormForAdd">
                                 @csrf
                                 <select name="bookshelf" class="form-control">
                                     <option disabled selected value>選択してください</option>

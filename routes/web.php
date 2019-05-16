@@ -14,7 +14,7 @@
 Route::group(['middleware' => 'auth'], function() {
     Route::resource('/profile', 'ProfileController');
     Route::get('/book/favorite', 'BookController@favorite');
-    Route::post('/book/{book}/bookshelf/{bookshelf}', 'BookController@add');
+    Route::post('/book/{book}/bookshelf', 'BookController@add');
     Route::resource('/book', 'BookController');
     Route::delete('/bookshelf/{bookshelf}/book/{book}', 'BookShelfController@remove');
     Route::resource('/bookshelf', 'BookShelfController');

@@ -101,8 +101,9 @@ class BookShelfController extends Controller
     {
         $bookshelf->title = $request->title;
         $bookshelf->save();
-
-        return redirect('/bookshelf');
+        return response()->json([
+            'responseText' => url('/bookshelf')
+        ]);
     }
 
     /**

@@ -29,16 +29,12 @@
                         <h3 class="modal-title" id="demoModalTitle">本棚編集(タイトルのみ編集可)</h3>
                     </div>
                     <div class="modal-body text-center">
-                        <form method="post" action="{{  url("/bookshelf/{$bookshelf->id}") }}">
-                            @csrf {{ method_field('patch') }}
+                        <form method="post" action="{{  url("/bookshelf/{$bookshelf->id}") }}" class='AjaxFormForBookshelfTitle'>
+                            @csrf
                             <div class="form-group">
-                                <input id="input-title" name="title" type="text" placeholder="本棚のタイトル" value="{{ old('title') ?? $bookshelf->title }}" class="form-control input-md {{ $errors->has('title') ? 'is-invalid' : '' }}">
+                                <input id="input-title" name="title" type="text" placeholder="本棚のタイトル" value="{{ old('title') ?? $bookshelf->title }}" class="form-control input-md">
+                                <ul class="invalid-feedback result" style="list-style-type: none"></ul>
                                 <button type="submit" class="btn btn-success mt-3">編集する</button>
-                                <ul class="invalid-feedback" style="list-style-type: none">
-                                    @foreach($errors->get('title') as $message)
-                                        <li>{{ $message }}</li>
-                                    @endforeach
-                                </ul>
                             </div>
                         </form>
                     </div>
@@ -54,4 +50,6 @@
 <div class='text-center'>
     {{ $bookshelves->links() }}
 </div>
-
+@section('script_bottom')
+    <script src="{{ asset('/js/my.js') }}"></script>
+@endsection

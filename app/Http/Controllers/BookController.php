@@ -178,11 +178,10 @@ class BookController extends Controller
         ]);
     }
 
-    public function add(Book $book, Bookshelf $bookshelf, BookAddRequest $request){
-        $book->bookshelves()->attach($bookshelf->id);
+    public function add(Book $book, BookAddRequest $request){
+        $book->bookshelves()->attach($request->bookshelf);
         return response()->json([
-            'responseText' => url("/bookshelf/{$bookshelf->id}"),
+            'responseText' => url("/bookshelf/{$request->bookshelf}"),
         ]);
-        // echo url("/bookshelf/{$bookshelf->id}");
     }
 }

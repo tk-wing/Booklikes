@@ -1,20 +1,17 @@
 $(function() {
 
     // 本棚登録のバリデーション
-    $('.AjaxForm').on('submit', function() {
+    $('.AjaxFormForAdd').on('submit', function() {
         event.preventDefault();
-        var bookId = $(this).siblings('.book_id').text();
         var bookshelf = $(this).find('[name=bookshelf]').val();
         var form = $(this);
         $.ajax({
-            url: form.attr('action'),
-            type: form.attr('method'),
             headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                     },
-                url:'/book/' + bookId + '/bookshelf/' + bookshelf,
-                type:'post',
-                dataType:'json',
+            url: form.attr('action'),
+            type: form.attr('method'),
+            dataType:'json',
                 data:{
                     'bookshelf': bookshelf,
                 },
@@ -30,6 +27,35 @@ $(function() {
                 });
             })
 
+    });
+
+    // 本棚登録のバリデーション
+    $('.AjaxFormForBookshelfTitle').on('submit', function() {
+        event.preventDefault();
+        var title = $(this).find('[name=title]').val();
+        var form = $(this);
+        $.ajax({
+            headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    },
+            url: form.attr('action'),
+            type: 'patch',
+            dataType:'json',
+                data:{
+                    'title': title,
+                },
+            })
+            .done(function(data){
+                console.log(data);
+                location.href = data.responseText;
+            })
+            .fail(function(err){
+                form.find('.form-control').addClass('is-invalid');
+                var errors = err.responseJSON.errors.title;
+                errors.forEach(function(error){
+                    $(form.find('.result')).append('<li>'+error+'</li>');
+                });
+            })
     });
 
     // いいね
