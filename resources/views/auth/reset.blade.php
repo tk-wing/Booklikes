@@ -17,13 +17,7 @@
                     </ul>
                 </div>
             </div>
-
-            <div class="form-group">
-                <label class="col-md-4 control-label" for=""></label>
-                <div class="col-md-4">
-                    <button type="submit" class="btn btn-success">メールを送信する</button>
-                </div>
-            </div>
+            <button type="submit" class="btn btn-success">メールを送信する</button>
         </fieldset>
     </form>
 </div>

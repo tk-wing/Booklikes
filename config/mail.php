@@ -133,4 +133,7 @@ return [
 
     'log_channel' => env('MAIL_LOG_CHANNEL'),
 
+    // Mail "Pretend"
+    'pretend' => env('MAIL_PRETEND', false),
+
 ];
