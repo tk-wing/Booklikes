@@ -12,5 +12,6 @@ return [
         'bookshelf' => [
             'exists' => 'この本は既に:attributeに登録されています。',
         ],
+        'exists' => '入力された:attributeは、登録されていません。'
     ]
 ];

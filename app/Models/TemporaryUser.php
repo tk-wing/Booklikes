@@ -11,4 +11,8 @@ class TemporaryUser extends Model
     protected $fillable = ['user_id', 'email', 'token', 'created_at'];
     public $timestamps = false;
 
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+
 }

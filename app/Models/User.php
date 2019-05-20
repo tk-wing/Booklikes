@@ -39,6 +39,11 @@ class User extends Authenticatable
         return $this->belongsToMany(self::class, 'likes', 'user_id', 'book_id');
     }
 
+    public function TemporaryUser()
+    {
+        return $this->hasOne(TemporaryUser::class);
+    }
+
     public function store($request)
     {
         if ($request->hasFile('img_name')) {
@@ -56,6 +61,12 @@ class User extends Authenticatable
         $this->email = $request->email;
         $this->password = Hash::make($request->password);
 
+        $this->save();
+    }
+
+    public function passwordUpdate($request)
+    {
+        $this->password = Hash::make($request->password);
         $this->save();
     }
 }

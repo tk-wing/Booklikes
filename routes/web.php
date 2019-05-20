@@ -29,8 +29,10 @@ Route::get('/signup', 'Auth\SignupController@create');
 Route::post('/signup', 'Auth\SignupController@store');
 Route::get('/login', 'Auth\AuthController@index')->name('login');
 Route::post('/login', 'Auth\AuthController@authenticate');
-Route::get('/password/reset', 'Auth\ResetController@create');
-Route::post('/password/reset', 'Auth\ResetController@store');
+Route::get('/password/reset/create', 'Auth\ResetController@create');
+Route::post('/password/reset/create', 'Auth\ResetController@store');
+Route::get('/password/reset', 'Auth\ResetController@reset');
+Route::patch('/password/reset', 'Auth\ResetController@update');
 Route::get('/logout', 'Auth\AuthController@logout');
 
 

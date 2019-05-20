@@ -12,7 +12,7 @@
             <div class="form-group">
                 <label class="col-md-4 control-label" for="input-email">メールアドレス</label>
                 <div class="col-md-4">
-                    <input id="input-email" name="email" type="text" placeholder="メールアドレス" class="form-control input-md {{ $errors->has('email') ? 'is-invalid' : '' }}">
+                    <input id="input-email" name="email" type="text" placeholder="メールアドレス" value="{{ old('email') }}" class="form-control input-md {{ $errors->has('email') ? 'is-invalid' : '' }}">
                     <ul class="invalid-feedback" style="list-style-type: none">
                         @foreach($errors->get('email') as $message)
                             <li>{{ $message }}</li>
@@ -41,7 +41,7 @@
             </div>
         </fieldset>
     </form>
-    <a href="{{ url('/password/reset') }}"><button type="button" class="btn btn-info">パスワードお忘れの方はこちら</button></a>
+    <a href="{{ url('/password/reset/create') }}"><button type="button" class="btn btn-info">パスワードお忘れの方はこちら</button></a>
     </div>
 </div>
 @endsection

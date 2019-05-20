@@ -12,5 +12,6 @@ return [
         'bookshelf' => [
             'exists' => 'This book has been already added to :attribute.',
         ],
+        'exists' => 'The input :attribute is not registered',
     ]
 ];
