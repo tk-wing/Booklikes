@@ -14,8 +14,10 @@ class CreateBookshelvesHasCategoriesTable extends Migration
     public function up()
     {
         Schema::create('bookshelves_has_categories', function (Blueprint $table) {
-            $table->bigInteger('bookshelf_id')->reference('id')->on('bookshelves')->unsigned();
-            $table->bigInteger('category_id')->reference('id')->on('categories')->unsigned();
+            $table->bigInteger('bookshelf_id')->unsigned();
+            $table->foreign('bookshelf_id')->references('id')->on('bookshelves');
+            $table->integer('category_id')->unsigned();
+            $table->foreign('category_id')->references('id')->on('categories');
             $table->primary(['bookshelf_id', 'category_id']);
         });
     }

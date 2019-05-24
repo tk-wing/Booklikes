@@ -14,7 +14,8 @@ class CreateTemporaryUsersTable extends Migration
     public function up()
     {
         Schema::create('temporary_users', function (Blueprint $table) {
-            $table->bigInteger('user_id')->reference('id')->on('users')->unsigned();
+            $table->bigInteger('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users');
             $table->string('email');
             $table->string('token');
             $table->dateTime('created_at');

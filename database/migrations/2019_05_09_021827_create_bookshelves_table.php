@@ -15,7 +15,8 @@ class CreateBookshelvesTable extends Migration
     {
         Schema::create('bookshelves', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('user_id')->reference('id')->on('users')->unsigned();
+            $table->bigInteger('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users');
             $table->string('title');
             $table->timestamps();
         });

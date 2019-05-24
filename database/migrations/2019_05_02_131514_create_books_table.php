@@ -15,8 +15,10 @@ class CreateBooksTable extends Migration
     {
         Schema::create('books', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('user_id')->references('id')->on('users')->unsigned();
-            $table->tinyInteger('category_id')->references('id')->on('categories')->unsigned();
+            $table->bigInteger('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->integer('category_id')->unsigned();
+            $table->foreign('category_id')->references('id')->on('categories');
             $table->string('title');
             $table->text('comment');
             $table->string('img_name');

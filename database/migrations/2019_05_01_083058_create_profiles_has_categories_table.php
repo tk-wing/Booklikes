@@ -14,8 +14,10 @@ class CreateProfilesHasCategoriesTable extends Migration
     public function up()
     {
         Schema::create('profiles_has_categories', function (Blueprint $table) {
-            $table->bigInteger('profile_id')->references('id')->on('profiles')->unsigned();
-            $table->tinyInteger('category_id')->references('id')->on('categories')->unsigned();
+            $table->bigInteger('profile_id')->unsigned();
+            $table->foreign('profile_id')->references('id')->on('profiles');
+            $table->integer('category_id')->unsigned();
+            $table->foreign('category_id')->references('id')->on('categories');
             $table->primary(['profile_id', 'category_id']);
         });
     }

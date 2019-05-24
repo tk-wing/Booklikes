@@ -14,7 +14,8 @@ class CreateProfilesTable extends Migration
     public function up()
     {
         Schema::create('profiles', function (Blueprint $table) {
-            $table->bigInteger('id')->references('id')->on('users')->unsigned();
+            $table->bigInteger('id')->unsigned();
+            $table->foreign('id')->references('id')->on('users');
             $table->string('nickname')->nullable();
             $table->text('comment')->nullable();
             $table->primary('id');

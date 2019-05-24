@@ -30,7 +30,7 @@ class ResetController extends Controller
             'token' => $token,
             'created_at' => now()
         ]);
-        Mail::to('tsubasa.kudo@andco.group')->send(new PasswordReset($token));
+        Mail::to($user->email)->send(new PasswordReset($token));
         return view('index');
     }
 
@@ -38,8 +38,14 @@ class ResetController extends Controller
     {
         $temp = TemporaryUser::where('token', $request->reset)->first();
         $time = (new Carbon($temp->created_at))->addHours(24);
-        dd($time);
-        return view('auth.update');
+        if(now() > $time){
+            return view('auth.update', [
+                'expiry' => true,
+            ]);
+        }
+        return view('auth.update', [
+            'expiry' => false,
+        ]);
     }
 
     public function update(PasswordUpdateRequest $request)

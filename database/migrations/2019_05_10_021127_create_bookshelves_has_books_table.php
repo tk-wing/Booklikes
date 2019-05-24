@@ -14,8 +14,10 @@ class CreateBookshelvesHasBooksTable extends Migration
     public function up()
     {
         Schema::create('bookshelves_has_books', function (Blueprint $table) {
-            $table->bigInteger('bookshelf_id')->reference('id')->on('bookshelves')->unsigned();
-            $table->bigInteger('book_id')->reference('id')->on('book_id')->unsigned();
+            $table->bigInteger('bookshelf_id')->unsigned();
+            $table->foreign('bookshelf_id')->references('id')->on('bookshelves');
+            $table->bigInteger('book_id')->unsigned();
+            $table->foreign('book_id')->references('id')->on('books');
             $table->primary(['bookshelf_id', 'book_id']);
         });
     }
