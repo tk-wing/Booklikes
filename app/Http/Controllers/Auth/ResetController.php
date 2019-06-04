@@ -24,6 +24,10 @@ class ResetController extends Controller
     {
         $token = Str::random(32);
         $user = User::where('email', $request->email)->first();
+        $temp = $user->temporaryUser;
+        if($temp){
+            $temp->delete();
+        }
         $temp = $user->temporaryUser();
         $temp->create([
             'email' => $user->email,
@@ -37,6 +41,12 @@ class ResetController extends Controller
     public function reset(Request $request)
     {
         $temp = TemporaryUser::where('token', $request->reset)->first();
+        if(!$temp){
+            return view('auth.update', [
+                'expiry' => true,
+            ]);
+        }
+
         $time = (new Carbon($temp->created_at))->addHours(24);
         if(now() > $time){
             return view('auth.update', [

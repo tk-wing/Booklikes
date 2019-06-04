@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Models\TemporaryUser;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -24,8 +25,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        // $schedule->call(function (){
+        //     $time = now()->subHour(24);
+        //     TemporaryUser::where('created_at', '<', $time)->delete();
+        // })->everyMinute(1);
     }
 
     /**

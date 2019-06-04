@@ -39,7 +39,7 @@ class User extends Authenticatable
         return $this->belongsToMany(self::class, 'likes', 'user_id', 'book_id');
     }
 
-    public function TemporaryUser()
+    public function temporaryUser()
     {
         return $this->hasOne(TemporaryUser::class);
     }
